@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+	<meta name="renderer" content="webkit">
+    <title>Title</title>
+    <script src="/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="/plugins/angular/angular.1.4.6.min.js"></script>
+    <script src="/plugins/me-lazyimg/me-lazyimg.js"></script>
+<style>
+
+    a, address, b, big, blockquote, body, center, cite, code, dd, del, div, dl, dt, em, fieldset, font, form, h1, h2, h3, h4, h5, h6, html, i, iframe, img, ins, label, legend, li, ol, p, pre, small, span, strong, u, ul, var {
+        margin: 0;
+        padding: 0;
+    }
+    article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {
+        display: block;
+    }
+    hr {
+        box-sizing: content-box;
+        height: 0;
+    }
+    button, html input[type="button"], input[type="submit"] {
+        cursor: pointer;
+    }
+    button[disabled], html input[disabled] {
+        cursor: default;
+    }
+    ol, ul {
+        list-style: outside none none;
+    }
+    img {
+        border: 0 none;
+        vertical-align: middle;
+    }
+    em, i, u {
+        font-style: normal;
+    }
+    .w {
+        width: 1210px;
+    }
+    .w {
+        margin: 0 auto;
+    }
+    .fl {
+        float: left;
+    }
+
+
+    .ac {
+        text-align: center;
+    }
+    .hide {
+        display: none;
+    }
+
+    .clearfix::after {
+        clear: both;
+        content: ".";
+        display: block;
+        height: 0;
+        visibility: hidden;
+    }
+    .clearfix {
+    }
+
+    .cw-icon .i, .cw-icon i {
+        display: block;
+        overflow: hidden;
+        position: absolute;
+    }
+
+    body {
+        background: #fff none repeat scroll 0 0;
+        color: #666;
+        font: 12px/150% tahoma,arial,Microsoft YaHei,Hiragino Sans GB,"u5b8bu4f53",sans-serif;
+    }
+    a {
+        color: #666;
+        text-decoration: none;
+    }
+    a:hover {
+        color: #c81623;
+    }
+    .m, .mb, .mc, .mt, .p-detail, .p-img, .p-market, .p-name, .p-price, .sm, .smb, .smc, .smt {
+        overflow: hidden;
+    }
+
+    #shortcut-2014 .w {
+        background: #f1f1f1 none repeat scroll 0 0;
+    }
+    #shortcut-2014 li {
+        float: left;
+        height: 30px;
+        padding: 0 2px;
+    }
+
+    #shortcut-2014 li.dorpdown:hover .dt {
+        -moz-border-bottom-colors: none;
+        -moz-border-left-colors: none;
+        -moz-border-right-colors: none;
+        -moz-border-top-colors: none;
+        background: #fff none repeat scroll 0 0;
+        border-color: #ddd;
+        border-image: none;
+        border-style: solid;
+        border-width: 0 1px;
+    }
+
+    #shortcut-2014 li.hover .dt {
+        -moz-border-bottom-colors: none;
+        -moz-border-left-colors: none;
+        -moz-border-right-colors: none;
+        -moz-border-top-colors: none;
+        background: #fff none repeat scroll 0 0;
+        border-color: #ddd;
+        border-image: none;
+        border-style: solid;
+        border-width: 0 1px;
+    }
+
+    #shortcut-2014 .dt {
+        float: left;
+        padding: 0 8px;
+    }
+    #shortcut-2014 .dd {
+        line-height: 24px;
+    }
+    #shortcut-2014 .ci-right s {
+        font-family: simsun;
+        position: relative;
+        text-decoration: none;
+        top: -8px;
+    }
+
+    #shortcut-2014 #ttbar-mycity .dt {
+        padding: 0 25px 0 10px;
+    }
+    #shortcut-2014 #ttbar-mycity:hover .dt {
+        padding: 0 24px 0 9px;
+    }
+    #shortcut-2014 #ttbar-mycity .dd {
+        padding: 10px 0 10px 10px;
+        width: 301px;
+    }
+
+    #shortcut-2014 #ttbar-mycity .item {
+        float: left;
+        padding: 2px 0;
+        width: 60px;
+    }
+    #shortcut-2014 #ttbar-mycity .item a {
+        float: left;
+        padding: 0 8px;
+    }
+    #shortcut-2014 #ttbar-mycity .item a:hover {
+        background: #f4f4f4 none repeat scroll 0 0;
+    }
+    #shortcut-2014 #ttbar-mycity .item a.selected {
+        background: #c81623 none repeat scroll 0 0;
+        color: #fff;
+    }
+
+ #shortcut-2014 #ttbar-login .icon-plus-state3 .u-pic img {
+        background: rgba(0, 0, 0, 0) url("//misc.360buyimg.com/jdf/1.0.0/unit/shortcut/2.0.0/i/user-plus-img-bg.png") no-repeat scroll 0 0;
+        padding: 2px;
+    }
+
+    #shortcut-2014 #ttbar-login .u-pic img {
+        border-radius: 50%;
+    }
+
+    #shortcut-2014 #ttbar-login .badge-panel i {
+        background: rgba(0, 0, 0, 0) url("//misc.360buyimg.com/jdf/1.0.0/unit/shortcut/2.0.0/i/user-medal24.png") no-repeat scroll 0 0;
+        display: block;
+        height: 55px;
+        margin: 0 auto;
+        width: 54px;
+    }
+    #shortcut-2014 #ttbar-login .badge-panel-main .fore1 i {
+        background-position: 0 0;
+    }
+    #shortcut-2014 #ttbar-login .badge-panel-main .fore1.u-dis i {
+        background-position: 0 -56px;
+    }
+    #shortcut-2014 #ttbar-login .badge-panel-main .fore2 i {
+        background-position: -55px 0;
+    }
+    #shortcut-2014 #ttbar-login .badge-panel-main .fore2.u-dis i {
+        background-position: -55px -56px;
+    }
+    #shortcut-2014 #ttbar-login .badge-panel-main .fore3 i {
+        background-position: -110px 0;
+    }
+    #shortcut-2014 #ttbar-login .badge-panel-main .fore3.u-dis i {
+        background-position: -110px -56px;
+    }
+    #shortcut-2014 #ttbar-login .badge-panel-main .fore4 i {
+        background-position: -165px 0;
+    }
+    #shortcut-2014 #ttbar-login .badge-panel-main .fore4.u-dis i {
+        background-position: -165px -56px;
+    }
+    #shortcut-2014 #ttbar-login .badge-panel-main .fore5 i {
+        background-position: -220px 0;
+    }
+    #shortcut-2014 #ttbar-login .badge-panel-main .fore5.u-dis i {
+        background-position: -220px -56px;
+    }
+    #shortcut-2014 #ttbar-login .badge-panel-main .fore6 i {
+        background-position: -275px 0;
+    }
+    #shortcut-2014 #ttbar-login .badge-panel-main .fore6.u-dis i {
+        background-position: -275px -56px;
+    }
+    #shortcut-2014 #ttbar-login .badge-panel-main .fore7 i {
+        background-position: -330px 0;
+    }
+    #shortcut-2014 #ttbar-login .badge-panel-main .fore7.u-dis i {
+        background-position: -330px -56px;
+    }
+    #shortcut-2014 #ttbar-login .badge-panel-main .fore8 i {
+        background-position: -385px 0;
+    }
+    #shortcut-2014 #ttbar-login .badge-panel-main .fore8.u-dis i {
+        background-position: -385px -56px;
+    }
+    #shortcut-2014 #ttbar-login .badge-panel-main .fore9 i {
+        background-position: -440px 0;
+    }
+    #shortcut-2014 #ttbar-login .badge-panel-main .fore9.u-dis i {
+        background-position: -440px -56px;
+    }
+    #shortcut-2014 #ttbar-login .badge-panel-main .fore10 i {
+        background-position: -495px 0;
+    }
+    #shortcut-2014 #ttbar-login .badge-panel-main .fore10.u-dis i {
+        background-position: -495px -56px;
+    }
+
+    #shortcut-2014 #ttbar-apps .dt {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+    #shortcut-2014 #ttbar-apps .dd {
+        width: 250px;
+    }
+    #shortcut-2014 #ttbar-apps .dd a {
+        display: block;
+        height: 44px;
+        overflow: hidden;
+        position: absolute;
+        text-indent: -500px;
+        width: 56px;
+    }
+
+    #shortcut-2014 #ttbar-atte .dt, #shortcut-2014 #ttbar-serv .dt {
+        padding-right: 25px;
+        width: 49px;
+    }
+    #shortcut-2014 #ttbar-atte .dd, #shortcut-2014 #ttbar-serv .dd {
+        padding-bottom: 8px;
+        width: 82px;
+    }
+    #shortcut-2014 #ttbar-atte .item, #shortcut-2014 #ttbar-serv .item {
+        display: inline-block;
+        padding-left: 15px;
+        width: 70px;
+    }
+
+    #shortcut-2014 #ttbar-serv .dd {
+        width: 170px;
+    }
+    #shortcut-2014 #ttbar-serv .item {
+        padding-left: 10px;
+    }
+
+    #shortcut-2014 #ttbar-navs .dt {
+        padding-right: 25px;
+        width: 49px;
+    }
+    #shortcut-2014 #ttbar-navs .dd {
+        padding: 20px 0 16px;
+        right: 0;
+        width: 988px;
+    }
+    #shortcut-2014 #ttbar-navs dl {
+        border-left: 1px solid #ddd;
+        float: left;
+        padding-left: 20px;
+        width: 201px;
+    }
+
+    #shortcut-2014 #ttbar-navs dt {
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+    #shortcut-2014 #ttbar-navs .item {
+        float: left;
+        width: 100px;
+    }
+
+    .root61 #shortcut-2014 #ttbar-navs .dd {
+        width: 1210px;
+    }
+
+    .root61 #shortcut-2014 #ttbar-navs dl {
+        width: 259px;
+    }
+
+    .root61 #shortcut-2014 #ttbar-navs .item {
+        width: 86px;
+    }
+
+    #categorys-mini-main h3 {
+        color: #666;
+        font-family: "Microsoft YaHei";
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 24px;
+    }
+    #categorys-mini-main a {
+        color: #666;
+        font-size: 12px;
+        padding: 0;
+    }
+
+
+    #categorys-mini .cw-icon h2 {
+        color: #666;
+        font-family: "Microsoft YaHei";
+        font-size: 12px;
+        font-weight: 400;
+    }
+    #categorys-mini .cw-icon i {
+        font: 400 15px/15px consolas;
+        height: 7px;
+        right: 5px;
+        top: 9px;
+    }
+    #categorys-mini .cw-icon s {
+        position: relative;
+        text-decoration: none;
+        top: -7px;
+    }
+
+    #search-2014 .cw-icon i {
+        height: 36px;
+        left: 0;
+        top: 0;
+        width: 82px;
+    }
+
+
+
+
+    #hotwords-2014 a {
+        float: left;
+        margin-right: 10px;
+        white-space: nowrap;
+    }
+
+    #shelper li {
+        cursor: pointer;
+        line-height: 22px;
+        overflow: hidden;
+        padding: 1px 6px;
+    }
+
+
+    #shelper .item3 a {
+        float: left;
+        margin-right: 10px;
+        white-space: nowrap;
+    }
+
+    #shelper li.fore1 strong {
+        color: #c00;
+    }
+    #shelper li.fore1 .fore1 strong {
+        color: #333;
+    }
+
+
+    #shelper li.fore1 span {
+        float: left;
+    }
+
+    #shelper li.fore1 div:hover {
+        background: #f5f5f5 none repeat scroll 0 0;
+    }
+
+
+    #hotwords a {
+        color: #666;
+    }
+
+    #hotwords a:hover {
+        color: #c81623;
+    }
+    #hotwords strong {
+        color: #666;
+    }
+
+    #ttbar-myjd .dt {
+        padding-right: 25px;
+        width: 49px;
+    }
+
+    #ttbar-myjd .u-pic img {
+        border-radius: 50%;
+    }
+
+
+
+    #ttbar-myjd .viewlist .smt h4 {
+        float: left;
+    }
+
+    #ttbar-myjd .viewlist .item {
+        float: left;
+        font-size: 0;
+        line-height: 0;
+        padding: 4px;
+    }
+
+
+    #nav-2014 .w {
+        height: 44px;
+        position: relative;
+        z-index: 9;
+    }
+
+
+    #categorys-2014 .dt a {
+        background: #b1191a none repeat scroll 0 0;
+        color: #fff;
+        display: block;
+        font: 400 15px/44px "microsoft yahei";
+        height: 44px;
+        padding: 0 10px;
+        text-decoration: none;
+        width: 190px;
+    }
+    #categorys-2014 .dt s {
+        position: relative;
+        text-decoration: none;
+        top: -9px;
+    }
+
+    #categorys-2014 .dd {
+        background: #c81623 none repeat scroll 0 0;
+        height: 497px;
+        margin-top: 2px;
+    }
+    #categorys-2014 .dd-inner .item {
+        border-left: 1px solid #b61d1d;
+        color: #fff;
+        height: 31px;
+        position: relative;
+        z-index: 1;
+    }
+    #categorys-2014 .dd-inner .item a {
+        color: #fff;
+    }
+    #categorys-2014 .dd-inner h3 {
+        font-family: "microsoft yahei";
+        font-size: 14px;
+        font-weight: 400;
+        height: 31px;
+        line-height: 31px;
+        padding: 0 10px;
+        position: absolute;
+        z-index: 2;
+    }
+    #categorys-2014 .dd-inner i {
+        font: 400 9px/14px consolas;
+        height: 14px;
+        position: absolute;
+        right: 14px;
+        top: 9px;
+        width: 4px;
+        z-index: 1;
+    }
+
+    #categorys-2014 .dd-inner .hover a {
+        color: #b61d1d;
+    }
+    #categorys-2014 .dd-inner .hover i {
+        background: #f7f7f7 none repeat scroll 0 0;
+        height: 31px;
+        left: 205px;
+        line-height: 200px;
+        overflow: hidden;
+        top: 0;
+        width: 14px;
+    }
+
+    #categorys-2014 .item-channels a {
+        background: #7c7171 none repeat scroll 0 0;
+        color: #fff;
+        display: inline-block;
+        float: left;
+        line-height: 24px;
+        margin-right: 10px;
+        padding: 0 0 0 8px;
+        white-space: nowrap;
+    }
+    #categorys-2014 .item-channels a:hover {
+        background: #c81623 none repeat scroll 0 0;
+    }
+    #categorys-2014 .item-channels a:hover i {
+        background: #b1191a none repeat scroll 0 0;
+    }
+    #categorys-2014 .item-channels i {
+        background: #5c5251 none repeat scroll 0 0;
+        cursor: pointer;
+        display: inline-block;
+        font: 400 9px/24px consolas;
+        height: 24px;
+        margin-left: 8px;
+        text-align: center;
+        width: 23px;
+    }
+
+    #categorys-2014 .item-channels .style-red i {
+        background: #b1191a none repeat scroll 0 0;
+    }
+
+    #categorys-2014 .item-channels .style-red:hover i {
+        background: #851313 none repeat scroll 0 0;
+    }
+
+    #categorys-2014 .subitems dl {
+        line-height: 2em;
+        overflow: hidden;
+        width: 100%;
+    }
+    #categorys-2014 .subitems dl.fore1 dd {
+        border-top: medium none;
+    }
+    #categorys-2014 .subitems dt {
+        float: left;
+        font-weight: 700;
+        padding: 8px 30px 0 0;
+        position: relative;
+        text-align: right;
+        width: 54px;
+    }
+    #categorys-2014 .subitems dt i {
+        font: 400 9px/14px consolas;
+        height: 14px;
+        position: absolute;
+        right: 18px;
+        top: 13px;
+        width: 4px;
+    }
+    #categorys-2014 .subitems dd {
+        border-top: 1px solid #eee;
+        float: left;
+        padding: 6px 0;
+        width: 480px;
+    }
+    #categorys-2014 .subitems dd a {
+        border-left: 1px solid #e0e0e0;
+        float: left;
+        height: 16px;
+        line-height: 16px;
+        margin: 4px 0;
+        padding: 0 8px;
+        white-space: nowrap;
+    }
+
+    #categorys-2014 .subitems .style-red-border a {
+        -moz-border-bottom-colors: none;
+        -moz-border-left-colors: none;
+        -moz-border-right-colors: none;
+        -moz-border-top-colors: none;
+        border-color: #db7078 currentcolor;
+        border-image: none;
+        border-style: dotted none;
+        border-width: 1px medium;
+        color: #c81623;
+        display: inline-block;
+        font-family: "Microsoft YaHei",tahoma,arial,"Hiragino Sans GB","宋体",sans-serif;
+        height: 12px;
+        line-height: 12px;
+        margin: 0;
+        padding: 1px;
+    }
+    #categorys-2014 .subitems .style-red-border .left-b, #categorys-2014 .subitems .style-red-border .right-b {
+        background: rgba(0, 0, 0, 0) url("//img10.360buyimg.com/uba/jfs/t2986/155/1039328667/119/6d2a472a/57722598N82f09586.png") no-repeat scroll 0 0;
+        float: left;
+        height: 16px;
+        width: 5px;
+    }
+
+    #categorys-2014 .item-brands a {
+        display: inline;
+        float: left;
+        margin: 1px 0 0 1px;
+    }
+
+    #categorys-2014 .item-promotions a {
+        display: block;
+        margin-bottom: 1px;
+    }
+
+
+    #navitems-2014 .spacer, #navitems-2014 a, #navitems-2014 li, #navitems-2014 ul {
+        float: left;
+    }
+
+    #navitems-2014 a {
+        color: #333;
+        font-size: 15px;
+        font-weight: 400;
+        height: 44px;
+        line-height: 44px;
+        padding: 0 20px;
+        text-align: center;
+        text-decoration: none;
+    }
+    #navitems-2014 a:hover {
+        color: #c81623;
+    }
+
+    .root61 #categorys-2014 .subitems dd {
+        width: 620px;
+    }
+
+    .root61 #categorys-2014 .subitems-main1 dd, .root61 #categorys-2014 .subitems-main2 dd {
+        width: 275px;
+    }
+    .root61 #categorys-2014 .subitems-main1 .fore1, .root61 #categorys-2014 .subitems-main1 .fore8, .root61 #categorys-2014 .subitems-main2 .fore1, .root61 #categorys-2014 .subitems-main2 .fore8 {
+        margin-top: -5px;
+    }
+    .root61 #categorys-2014 .subitems-main1 .fore1 dd, .root61 #categorys-2014 .subitems-main1 .fore8 dd, .root61 #categorys-2014 .subitems-main2 .fore1 dd, .root61 #categorys-2014 .subitems-main2 .fore8 dd {
+        border-top: 0 none;
+    }
+
+
+    #settleup-2014 .nogoods b {
+        background-image: url("//misc.360buyimg.com/jdf/1.0.0/unit/shoppingcart/2.0.0/i/settleup-nogoods.png");
+        float: left;
+        height: 49px;
+        width: 56px;
+    }
+
+    #settleup-content .smb span {
+        color: #c81623;
+    }
+    #settleup-content .smb a {
+        background: #e4393c none repeat scroll 0 0;
+        border-radius: 3px;
+        color: #fff;
+        float: right;
+        font-weight: 700;
+        height: 29px;
+        line-height: 29px;
+        padding: 0 10px;
+        text-align: center;
+    }
+    #settleup-content ul {
+        margin-top: -1px;
+    }
+    #settleup-content li {
+        border-top: 1px dotted #ccc;
+        line-height: 17px;
+        overflow: hidden;
+        padding: 8px 10px;
+        vertical-align: bottom;
+    }
+    #settleup-content li.hover, #settleup-content li:hover {
+        background: #f5f5f5 none repeat scroll 0 0;
+    }
+
+    #settleup-content li .gift a {
+        color: #999;
+    }
+
+    #settleup-content .p-img {
+        border: 1px solid #ddd;
+        float: left;
+        font-size: 0;
+        height: 50px;
+        margin-right: 10px;
+        padding: 0;
+        width: 50px;
+    }
+    #settleup-content .p-name {
+        float: left;
+        height: 52px;
+        width: 120px;
+    }
+
+    #settleup-content .p-price {
+        font-weight: 700;
+    }
+
+    #settleup-2014 .dt-mz a {
+        color: #999;
+    }
+
+    #mcart-suit .dt, #mcart-suit .dt:hover {
+        background: #d3ebff none repeat scroll 0 0;
+    }
+    #mcart-mj .dt, #mcart-mj .dt:hover, #mcart-mz .dt, #mcart-mz .dt:hover {
+        background: #bffab1 none repeat scroll 0 0;
+    }
+
+    #footer-2014 .links a {
+        margin: 0 5px;
+    }
+
+    #footer-2014 .authentication a {
+        margin: 0 5px;
+        text-decoration: none;
+    }
+    .root61 #footer-2014 .links a {
+        margin: 0 10px;
+    }
+    #service-2014 dl {
+        float: left;
+        width: 222px;
+    }
+
+    #service-2014 dt {
+        font: 400 16px/24px "microsoft yahei";
+        padding: 6px 0;
+    }
+    #service-2014 dd {
+        line-height: 20px;
+    }
+
+    #service-2014 .slogen .item {
+        display: inline-block;
+        font: 400 18px/50px "microsoft yahei";
+        height: 54px;
+        left: 50%;
+        position: absolute;
+        text-align: left;
+        top: 20px;
+        vertical-align: middle;
+        width: 245px;
+    }
+    #service-2014 .slogen .item i {
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        display: block;
+        height: 54px;
+        left: 10px;
+        position: absolute;
+        top: 0;
+        width: 220px;
+    }
+    #service-2014 .slogen .item b {
+        color: #c81623;
+        font-size: 24px;
+        padding: 0 10px;
+    }
+    #service-2014 .slogen .fore1 {
+        margin-left: -490px;
+    }
+    #service-2014 .slogen .fore1 i {
+        background-image: url("//misc.360buyimg.com/jdf/1.0.0/unit/service/1.0.0/i/service_items_1.png");
+    }
+
+    #service-2014 .slogen .fore2 i {
+        background-image: url("//misc.360buyimg.com/jdf/1.0.0/unit/service/1.0.0/i/service_items_2.png");
+    }
+
+    #service-2014 .slogen .fore3 i {
+        background-image: url("//misc.360buyimg.com/jdf/1.0.0/unit/service/1.0.0/i/service_items_3.png");
+    }
+
+    #service-2014 .slogen .fore4 i {
+        background-image: url("//misc.360buyimg.com/jdf/1.0.0/unit/service/1.0.0/i/service_items_4.png");
+    }
+    #coverage .dt {
+        font: 400 16px/24px "microsoft yahei";
+        padding: 6px 40px 15px 80px;
+    }
+    #coverage .dd {
+        padding: 0 40px 15px 80px;
+    }
+    .root61 #service-2014 dl {
+        width: 275px;
+    }
+
+    .root61 #service-2014 .slogen .item {
+        width: 302px;
+    }
+    hr {
+        box-sizing: content-box;
+        height: 0;
+    }
+    button, html input[type="button"], input[type="submit"] {
+        cursor: pointer;
+    }
+    button[disabled], html input[disabled] {
+        cursor: default;
+    }
+    ol, ul {
+        list-style: outside none none;
+    }
+    img {
+        border: 0 none;
+        vertical-align: middle;
+    }
+    em, i, u {
+        font-style: normal;
+    }
+    .fl {
+        float: left;
+    }
+
+    .ac {
+        text-align: center;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .clearfix::after {
+        clear: both;
+        content: ".";
+        display: block;
+        height: 0;
+        visibility: hidden;
+    }
+    .clearfix {
+    }
+    .cw-icon .i, .cw-icon i {
+        display: block;
+        overflow: hidden;
+        position: absolute;
+    }
+
+    body {
+        background: #fff none repeat scroll 0 0;
+        color: #666;
+        font: 12px/150% tahoma,arial,Microsoft YaHei,Hiragino Sans GB,"u5b8bu4f53",sans-serif;
+    }
+    a {
+        color: #666;
+        text-decoration: none;
+    }
+    a:hover {
+        color: #c81623;
+    }
+    .m, .mb, .mc, .mt, .p-detail, .p-img, .p-market, .p-name, .p-price, .sm, .smb, .smc, .smt {
+        overflow: hidden;
+    }
+
+    a {
+        color: #666;
+        text-decoration: none;
+    }
+    img {
+        border: 0 none;
+        vertical-align: middle;
+    }
+    body {
+        background: #fff none repeat scroll 0 0;
+        color: #666;
+        font: 12px/150% tahoma,arial,Microsoft YaHei,Hiragino Sans GB,"u5b8bu4f53",sans-serif;
+    }
+    body {
+        color: #666;
+        font: 12px/150% tahoma,arial,Microsoft YaHei,Hiragino Sans GB,"u5b8bu4f53",sans-serif;
+    }
+    ol, ul {
+        list-style: outside none none;
+    }
+    .li::after {
+        clear: both;
+        content: ".";
+        display: block;
+        height: 0;
+        visibility: hidden;
+    }
+    .li {
+        display: block;
+        line-height: 32px;
+        margin-bottom: 3px;
+    }
+    .li {
+        line-height: 32px;
+    }
+    .clearfix::after {
+        clear: both;
+        content: ".";
+        display: block;
+        height: 0;
+        visibility: hidden;
+    }
+    .product-intro {
+        margin-bottom: 10px;
+        margin-top: 10px;
+        position: relative;
+    }
+    .product-intro .preview-wrap {
+        float: left;
+        padding-bottom: 15px;
+        width: 302px;
+    }
+    .product-intro .itemInfo-wrap {
+        float: right;
+        width: 648px;
+    }
+    .preview {
+        position: relative;
+    }
+    .preview .jqzoom {
+        padding: 0;
+        position: relative;
+    }
+    .preview .main-img {
+        border: 1px solid #eee;
+        margin-bottom: 20px;
+    }
+    .preview .spec-list {
+        margin-bottom: 18px;
+        position: relative;
+    }
+    .preview .spec-list .arrow-prev {
+        left: 0;
+    }
+    .preview .spec-list .arrow-next, .preview .spec-list .arrow-prev {
+        cursor: pointer;
+        display: block;
+        float: left;
+        height: 32px;
+        margin-top: -16px;
+        position: absolute;
+        top: 50%;
+        width: 22px;
+    }
+    .preview .spec-list {
+        margin-bottom: 18px;
+        position: relative;
+    }
+    .preview .preview-info .left-btns .follow i {
+        background-image: url("http://static.360buyimg.com/item/default/1.0.33/components/preview/i/__sprite.png");
+        background-position: -44px -40px;
+        height: 13px;
+        width: 14px;
+    }
+    .preview .preview-info .left-btns .compare i {
+        background-image: url("//static.360buyimg.com/item/default/1.0.33/components/preview/i/__sprite.png");
+        background-position: -30px -24px;
+        height: 16px;
+        width: 15px;
+    }
+    .preview .preview-info .left-btns a {
+        cursor: pointer;
+        margin-right: 2px;
+    }
+    .preview .spec-list .arrow-prev.disabled i {
+        background: rgba(0, 0, 0, 0) url("http://static.360buyimg.com/item/default/1.0.33/components/preview/i/disabled-prev.png") repeat scroll 0 0;
+    }
+    .preview .spec-list .spec-items {
+        width: 390px;
+    }
+    .preview .spec-list .arrow-next {
+        right: 0;
+    }
+    .preview .spec-list .arrow-prev {
+        left: 0;
+    }
+    .preview .spec-list .arrow-prev .sprite-arrow-prev {
+        background-image: url("http://static.360buyimg.com/item/default/1.0.33/components/preview/i/__sprite.png");
+        background-position: 0 -54px;
+        height: 32px;
+        width: 22px;
+    }
+    .preview .spec-list .arrow-next, .preview .spec-list .arrow-prev {
+        cursor: pointer;
+        display: block;
+        float: left;
+        height: 32px;
+        margin-top: -16px;
+        position: absolute;
+        top: 50%;
+        width: 22px;
+    }
+    .preview .spec-list .arrow-next .sprite-arrow-next {
+        background-image: url("http://static.360buyimg.com/item/default/1.0.33/components/preview/i/__sprite.png");
+        background-position: -78px 0;
+        height: 32px;
+        width: 22px;
+    }
+    .preview .spec-list .arrow-next i, .preview .spec-list .arrow-prev i {
+        display: block;
+    }
+    .preview .spec-list .arrow-next {
+        right: 0;
+    }
+    .preview .spec-list .arrow-next, .preview .spec-list .arrow-prev {
+        cursor: pointer;
+        display: block;
+        float: left;
+        height: 32px;
+        margin-top: -16px;
+        position: absolute;
+        top: 50%;
+        width: 22px;
+    }
+    .preview .spec-list .arrow-next.disabled i {
+        background: rgba(0, 0, 0, 0) url("//static.360buyimg.com/item/default/1.0.33/components/preview/i/disabled-next.png") repeat scroll 0 0;
+    }
+    .preview .spec-list .spec-items {
+        width: 390px;
+    }
+    .preview .spec-items {
+        margin: 0 auto;
+        overflow: hidden;
+        width: 224px;
+    }
+    .preview .spec-items ul {
+        width: 2000px;
+    }
+    .preview .spec-items ul li {
+        float: left;
+        margin: 0 9px;
+    }
+    .preview .spec-items ul li.img_hover img, .preview .spec-items ul li:hover img {
+        border: 2px solid #e53e41;
+    }
+    .preview .preview-info .left-btns a {
+        cursor: pointer;
+        margin-right: 2px;
+    }
+
+    .itemInfo-wrap .summary {
+        padding-bottom: 5px;
+        position: relative;
+    }
+    .itemInfo-wrap .sku-name {
+        color: #666;
+        font: 700 16px/28px Arial,"microsoft yahei";
+        margin-bottom: 5px;
+        padding-top: 10px;
+    }
+
+    .itemInfo-wrap .news .item {
+        width: 738px;
+    }
+
+    .itemInfo-wrap .dt {
+        color: #999;
+        float: left;
+        font-family: simsun;
+        padding-left: 10px;
+    }
+    .itemInfo-wrap .dd {
+        margin-left: 70px;
+    }
+
+    .summary-stock .store {
+        margin-bottom: 5px;
+    }
+
+    .stock-address {
+        float: left;
+        margin-left: -5px;
+        margin-top: -3px;
+    }
+    .EDropdown, .EDropdown .head {
+        position: relative;
+    }
+    .preview .spec-items ul li img {
+        border: 2px solid #fff;
+    }
+
+    ol, ul {
+        list-style: outside none none;
+    }
+    .choose-support li {
+        float: left;
+        margin-right: 10px;
+    }
+    .choose-support a {
+        display: inline-block;
+        line-height: 18px;
+    }
+
+    .choose-support a i {
+        display: inline-block;
+        vertical-align: -4px;
+    }
+    em, i, u {
+        font-style: normal;
+    }
+    .hover div.border .head {
+        border-bottom: medium none;
+        padding-bottom: 1px;
+    }
+    .stock-address dl {
+        margin: 0 10px;
+        padding-bottom: 15px;
+    }
+    a, address, b, big, blockquote, body, center, cite, code, dd, del, div, dl, dt, em, fieldset, font, form, h1, h2, h3, h4, h5, h6, html, i, iframe, img, ins, label, legend, li, ol, p, pre, small, span, strong, u, ul, var {
+        margin: 0;
+        padding: 0;
+    }
+    .address-tab .tab-con {
+        border-top: 2px solid #e4393c;
+        margin-top: -2px;
+        padding-top: 10px;
+    }
+    .address-tab .tab-con li {
+        margin-bottom: 5px;
+        margin-right: 5px;
+        width: 6.4em;
+    }
+    .stock-address-list li {
+        display: inline-block;
+    }
+    .address-tab .tab-con li a {
+        margin-right: 0;
+    }
+    .stock-address dd {
+        padding-top: 10px;
+    }
+    .btn-def:hover, .btn-primary:hover, .btn-special1:hover, .btn-special2:hover, .btn-special3:hover, .itemInfo-wrap ins, .li .item a, .sp-category dl a, s {
+        text-decoration: none;
+    }
+    .itemInfo-wrap .summary-price-wrap {
+        background: #f3f3f3 none repeat scroll 0 0;
+        padding: 10px 0 0;
+    }
+
+    .itemInfo-wrap .summary-price-wrap {
+        background: #f3f3f3 none repeat scroll 0 0;
+        padding: 10px 0 0;
+    }
+    .itemInfo-wrap .summary-price-wrap .summary-price {
+        margin-bottom: 5px;
+        position: relative;
+    }
+    .itemInfo-wrap .summary-price-wrap .summary-price .dt {
+        line-height: 22px;
+    }
+    .itemInfo-wrap .dt {
+        color: #999;
+        float: left;
+        font-family: simsun;
+        padding-left: 10px;
+    }
+    .itemInfo-wrap .dd {
+        margin-left: 70px;
+    }
+    .itemInfo-wrap .summary-price-wrap .summary-price .p-price {
+        color: #e4393c;
+        font-family: "microsoft yahei";
+        margin-right: 10px;
+    }
+    .itemInfo-wrap .summary-price-wrap .summary-price .p-price .price {
+        font-size: 22px;
+    }
+
+    .itemInfo-wrap .summary-price-wrap .summary-info .item {
+        border-left: 1px solid #e6e6e6;
+        line-height: 15px;
+        padding: 0 10px;
+        text-align: center;
+    }
+    .itemInfo-wrap .summary-price-wrap .summary-info p {
+        color: #999;
+    }
+    .itemInfo-wrap .summary-price-wrap .summary-info .count {
+        color: #005ea7;
+        font: 14px verdana;
+    }
+    .itemInfo-wrap .summary-price-wrap .summary-top::after {
+        clear: both;
+        content: ".";
+        display: block;
+        height: 0;
+        visibility: hidden;
+    }
+
+
+    .itemInfo-wrap .summary {
+        padding-bottom: 5px;
+        position: relative;
+    }
+    .summary-line {
+        border-bottom: 1px dotted #dfdfdf;
+        height: 0;
+        margin-bottom: 15px;
+        overflow: hidden;
+    }
+    .itemInfo-wrap .sku-name {
+        color: #666;
+        font: 700 16px/28px Arial,"microsoft yahei";
+        margin-bottom: 5px;
+        padding-top: 10px;
+    }
+
+    .summary-line {
+        border-bottom: 1px dotted #dfdfdf;
+        height: 0;
+        margin-bottom: 15px;
+        overflow: hidden;
+    }
+    #choose-attr-1 {
+        line-height: 40px;
+    }
+    #summary-supply {
+        clear: both;
+        margin-top: -10px;
+    }
+    .itemInfo-wrap .summary {
+        padding-bottom: 5px;
+        position: relative;
+    }
+    .li .item a {
+        border: 1px solid #ccc;
+        display: block;
+        padding: 0 13px;
+        white-space: nowrap;
+    }
+    .li .item {
+        background-color: #fff;
+        color: #666;
+        float: left;
+        margin-bottom: 4px;
+        margin-right: 7px;
+    }
+    .li .item.hover a, .li .item.selected a, .li .item:hover a {
+        border: 1px solid #e3393c;
+        color: #666;
+    }
+    .btn-def:hover, .btn-primary:hover, .btn-special1:hover, .btn-special2:hover, .btn-special3:hover, .itemInfo-wrap ins, .li .item a, .sp-category dl a, s {
+        text-decoration: none;
+    }
+    .product-intro .preview-wrap {
+        width: 452px;
+    }
+    .aside {
+        float: left;
+        margin-bottom: 20px;
+        width: 210px;
+    }
+    .aside, .detail {
+        display: inline;
+    }
+    .m-aside .mt {
+        padding: 10px;
+    }
+    .m-aside .mt, .m-content .mt {
+        background-color: #f7f7f7;
+        border: 1px solid #eee;
+    }
+    .m, .mb, .mc, .mt, .p-detail, .p-img, .p-market, .p-name, .p-price, .sm, .smb, .smc, .smt {
+        overflow: hidden;
+    }
+    .m-aside .mc {
+        -moz-border-bottom-colors: none;
+        -moz-border-left-colors: none;
+        -moz-border-right-colors: none;
+        -moz-border-top-colors: none;
+        border-color: currentcolor #eee #eee;
+        border-image: none;
+        border-style: none solid solid;
+        border-width: medium 1px 1px;
+        overflow: visible;
+        padding: 10px 10px 0;
+    }
+    .detail {
+        width: 990px;
+    }
+    .detail {
+        float: right;
+        min-height: 220px;
+    }
+    .ETab .tab-main::after {
+        clear: both;
+        content: ".";
+        display: block;
+        height: 0;
+        visibility: hidden;
+    }
+    #detail .tab-main {
+        overflow: visible;
+        position: relative;
+    }
+    .ETab .tab-main::after {
+        clear: both;
+        content: ".";
+        display: block;
+        height: 0;
+        visibility: hidden;
+    }
+    #detail .tab-main {
+        overflow: visible;
+        position: relative;
+    }
+    .ETab .tab-main {
+        -moz-border-bottom-colors: none;
+        -moz-border-left-colors: none;
+        -moz-border-right-colors: none;
+        -moz-border-top-colors: none;
+        background-color: #f7f7f7;
+        border-color: #eee #eee #e4393c;
+        border-image: none;
+        border-style: solid;
+        border-width: 1px;
+        display: block;
+        position: relative;
+    }
+    .ETab .tab-main ul {
+        margin-top: -1px;
+    }
+    .ETab .tab-main li.current {
+        background-color: #e4393c;
+        color: #fff;
+        cursor: default;
+    }
+    .ETab .tab-main li {
+        cursor: pointer;
+        display: inline-block;
+        font-family: "microsoft yahei";
+        position: relative;
+    }
+    .ETab div.large li {
+         font-size: 14px;
+         padding: 10px 25px;
+     }
+    #detail .tab-con::after {
+        clear: both;
+        content: "";
+        display: block;
+        height: 0;
+        visibility: hidden;
+    }
+    .detail .p-parameter {
+        padding: 0 10px 10px;
+    }
+    .p-parameter {
+        margin-bottom: 10px;
+        padding: 0 10px 10px;
+    }
+    .detail .p-parameter-list {
+        padding: 20px 0 15px;
+    }
+    .p-parameter ul {
+        overflow: hidden;
+        padding: 20px 0 15px;
+    }
+    .p-parameter .more-par {
+        margin-top: -5px;
+        padding-right: 20px;
+        text-align: right;
+    }
+    .detail-content {
+        background: #f7f7f7 none repeat scroll 0 0;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        position: relative;
+    }
+    .detail-content-wrap {
+        background-color: #fff;
+        float: left;
+        width: 100%;
+    }
+    .detail-content-wrap .detail-content-item {
+        width: 100%;
+    }
+    #J-detail-banner {
+        text-align: center;
+    }
+    .detail .p-parameter-list li {
+        width: 200px;
+    }
+    .p-parameter ul li {
+        float: left;
+        margin-bottom: 5px;
+        padding-left: 42px;
+        width: 145px;
+    }
+    .p-parameter ul li, .p-parameter ul li .detail p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .ETab .tab-main .extra .item {
+        float: right;
+        margin-right: 10px;
+        padding-top: 8px;
+    }
+    .detail-content-tab .current i, .root61 .addcart-mini, .root61 .z-have-detail-nav .detail-content-nav {
+        display: block;
+    }
+    .EDropdown, .EDropdown .head {
+        position: relative;
+    }
+     .detail .p-parameter-list {
+        padding: 20px 0 15px;
+    }
+    .p-parameter ul {
+        overflow: hidden;
+        padding: 20px 0 15px;
+    }
+    .detail .p-parameter-list li {
+        width: 200px;
+    }
+    .p-parameter ul li {
+        float: left;
+        margin-bottom: 5px;
+        padding-left: 42px;
+        width: 145px;
+    }
+    .p-parameter ul li, .p-parameter ul li .detail p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .p-parameter ul li .detail {
+        min-height: 0;
+    }
+    .detail .p-parameter-list li .detail {
+        width: 197px;
+    }
+    .aside, .detail {
+        display: inline;
+    }
+    .m-aside, .m-content {
+        margin-bottom: 15px;
+    }
+    .m, .mb, .mc, .mt, .p-detail, .p-img, .p-market, .p-name, .p-price, .sm, .smb, .smc, .smt {
+        overflow: hidden;
+    }
+    .m-aside, .m-content {
+        margin-bottom: 15px;
+    }
+    .m-content .mt {
+        padding: 10px;
+        position: relative;
+    }
+    .m-content h3 {
+        font: 700 14px "microsoft yahei";
+    }
+    .item-detail-copyright {
+        line-height: 180%;
+        padding: 0 10px;
+    }
+    .serve-agree-bd {
+        padding: 20px 20px 20px 62px;
+    }
+    .serve-agree-bd {
+        padding: 20px 20px 20px 62px;
+    }
+    .serve-agree-bd dt {
+        color: #e4393c;
+        display: block;
+        font-family: "microsoft yahei";
+        font-size: 16px;
+        height: 32px;
+        line-height: 32px;
+        margin-left: -42px;
+    }
+    .serve-agree-bd dd {
+        display: block;
+        line-height: 18px;
+        padding: 10px 0 30px;
+    }
+    .serve-agree-bd dt .goods {
+        background: rgba(0, 0, 0, 0) url("//static.360buyimg.com/item/default/1.0.33/components/detail/i/iconZP.png") no-repeat scroll 0 0;
+    }
+    .item-detail-copyright strong {
+        display: inline-block;
+        padding: 8px 0 3px;
+    }
+    .serve-agree-bd dt i {
+        display: inline-block;
+        height: 32px;
+        line-height: 32px;
+        padding-right: 10px;
+        vertical-align: bottom;
+        width: 32px;
+    }
+    .m-content .mc {
+        overflow: visible;
+    }
+     .crumb .item {
+        float: left;
+    }
+    .EDropdown, .EDropdown .head {
+        position: relative;
+    }
+    .contact .item {
+        float: left;
+    }
+
+
+
+
+</style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" lazy-container  class="cat-1-9987 cat-2-653 cat-3-655 item-3726830 JD JD-1">
+<div class="w" style="width: 1210px;margin: 0 auto;">
+<div class="product-intro clearfix">
+   <div class="preview-wrap" >
+       <div class="preview" id="preview">
+           <div id="spec-n1" class="jqzoom main-img" data-big="1" clstag="shangpin|keycount|product|mainpic_1" lazy-container>
+               <ul class="preview-btn J-preview-btn">
+               </ul>
+               <img id="spec-img"  alt=""  class="lazy" lazy-src="{{Product.Image}}" src=""  width="450">
+               <i></i>
+           </div>
+           <div class="spec-list" clstag="shangpin|keycount|product|lunbotu_1" lazy-container>
+               <a id="spec-forward" href="javascript:;" class="arrow-prev disabled"><i class="sprite-arrow-prev"></i></a>
+               <a id="spec-backward" href="javascript:;" class="arrow-next disabled"><i class="sprite-arrow-next"></i></a>
+               <div id="spec-list" class="spec-items">
+                   <ul class="lh">
+                       <li ng-repeat="x in Product.Album"  ng-class='{img_hover:$first}' on-finish-render="InitSkuImg()" class="" >
+                           <img ng-click="chooseImage($event);"  alt="" class="lazy" lazy-src="{{x}}" src="" data-url="{{x}}" data-img="{{x}}" width="54" height="54">
+                       </li>
+                   </ul>
+               </div>
+           </div>
+       </div>
+
+   </div>
+   <div class="itemInfo-wrap">
+       <div class="sku-name">{{Product.Title}}&nbsp;&nbsp;{{Product.Sku.AttributeName}}</div>
+       <div class="summary summary-first">
+           <div class="summary-price-wrap">
+               <div class="summary-price J-summary-price">
+                   <div class="dt">价 格</div>
+                   <div class="dd">
+                       <span class="p-price"><span>￥</span><span class="price J-p-3726830" >{{Product.Sku.SkuPrice}}</span></span>
+                   </div>
+               </div>
+           </div>
+       </div>
+       <div class="summary p-choose-wrap">
+           <div class="summary-stock" clstag="shangpin|keycount|product|quyuxuanze_1">
+               <div class="dt">配 送 至</div>
+               <div class="dd">
+                   <div class="store clearfix">
+                       <div id="stock-address" class="stock-address EDropdown" data-role="drop">
+                           <div class="inner">
+                               <div data-drop="head" class="head">
+                                   <span class="text" data-res="">广东深圳市龙华新区</span>
+                                   <span class="arrow arr-close"></span>
+                               </div>
+                           </div>
+                       </div>
+                       <div id="store-prompt" class="store-prompt"><strong>存货{{Product.Sku.StockQuantity}}</strong></div>
+                       <div class="J-dcashDesc dcashDesc fl"></div>
+                   </div>
+               </div>
+           </div>
+           <div class="summary-line"></div>
+           <div id="choose-attrs">
+            <div ng-repeat="attribute in Product.AttributeList|filter:showFilter"    on-finish-render="InitDefaultSku()" id="choose-attr-1" class="li p-choose" data-type="{{attribute.AttributeName}}" data-idx="0">
+                <div class="dt">选择{{attribute.AttributeName}}</div>
+                <div class="dd" lazy-container>
+                    <div lazy-container  ng-repeat="option in attribute.AttributeValue" ng-if="option.ProductId>0" ng-class='{selected:$first}' class="item" data-sku="{{option.OptionId}}" data-value="{{option.OptionName}}" title="{{option.OptionName}}">
+                        <b></b>
+                        <a ng-click="chooseAttrs($event);" href="#none" clstag="shangpin|keycount|product|{{option.OptionName}}">
+                            <img ng-show="option.OptionImg" data-img="1" lazy-src="{{option.OptionImg}}" width="40" height="40">
+                            <i>{{option.OptionName}}</i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="choose-results" class="li" style="display:none"><div class="dt">已选择</div><div class="dd">{{Product.Title}}</div></div>
+        </div>
+    </div>
+   </div>
+</div>
+</div>
+<div class="w">
+    <div class="aside">
+
+        <ins class="ELazy-holder ELazy-holder14"></ins><ins class="ELazy-holder ELazy-holder14"></ins>
+        <div class="m m-aside hide" id="view-buy" clstag="shangpin|keycount|product|darenxuangou_1" style="display: block;">    <div class="mt">        <h3>其他人还看了</h3>    </div>
+            <div class="mc" lazy-container>
+                <ul class="plist">
+                    <li  ng-repeat="related in Product.ProductRelatedList" class="fore1" data-clk="" data-push="1">
+                        <div class="p-img ac">
+                            <a target="_blank" title="{{related.Title}}" href="/detail/{{related.ProductId2}}">
+                                <img alt="" class="lazy" lazy-src="{{related.ProductImg}}"  width="180" height="180" >
+                            </a>
+                        </div>
+                        <div class="p-name">
+                            <a target="_blank" title=""  href="/detail/{{related.ProductId2}}">{{related.Title}}</a></div>
+                        <div class="p-price"><strong class="J-p-3726830">￥{{related.SellPrice}}</strong></div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <div class="detail">
+        <div class="ETab" id="detail">
+            <div class="tab-main large" data-fixed="pro-detail-hd-fixed">
+                <ul>
+                    <li data-tab="trigger" data-anchor="#detail" class="current" clstag="shangpin|keycount|product|shangpinjieshao_1">商品介绍</li>
+                </ul>
+            </div>
+            <div class="tab-con">
+                <div data-tab="item">
+                    <div class="p-parameter">
+                        <ul id="parameter-brand" class="p-parameter-list">
+                            <li title="{{Product.BrandName }}">品牌： <a href="#" clstag="shangpin|keycount|product|pinpai_1" target="_blank">{{Product.BrandName }}</a>
+                            </li>
+                        </ul>
+                        <ul class="parameter2 p-parameter-list">
+                            <li   ng-repeat="dynamic in Product.DynamicList" title="{{dynamic.AttributeId  }}">{{dynamic.AttributeName  }}：{{dynamic.PromptText}}</li>
+                        </ul>
+                        <p class="more-par">
+                            <a href="#product-detail" class="J-more-param">更多参数<s class="txt-arr">&gt;&gt;</s></a>
+                        </p>
+                    </div>
+
+                    <div id="J-detail-banner"><a id="p-cat-insert" target="_blank" title="" href="//c-nfa.jd.com/adclick?keyStr=6PQwtwh0f06syGHwQVvRO2qQjwLJ5GHB8CWaVmO7akw8kRNUgm14u0WFAY6zp+eaNiAYfgtpim82Oa05ikX84yW5lmaaYRnc1A169XD3QgaWQZj7Q8HeFJYyTi8ig3JE4fLWlvRBkxoM4QrINBB7LW8iFgASk57is1B9+1eSu9/T1xeVbhyP5068x0ZumNwlv/7SSe9q7ZBCXWwxjFHP/r6uO37CY0Gpq2F6VJodSxa+LcM/29HoFWRR+IS3JwzGX9Bp73GHZ79P1hYK54ixq3JUyYon4u6OguV+SYB+YpNilRuhHxyLJHkfid7fVu5mhiN6+Mc28apMMzd+icNrBA==&amp;cv=2.0&amp;url=https://sale.jd.com/act/IknONw6aWQGyELR.html"><img alt="" src="//img13.360buyimg.com/da/jfs/t7963/206/1349788317/97960/188adf7a/599c2c18N5647e342.jpg" width="990"></a></div>                                                                        <div class="detail-content clearfix" data-name="z-have-detail-nav">
+                    <div class="detail-content-wrap">
+                        <div class="detail-content-item">
+                            <div id="J-detail-content">${Content}</div><!-- #J-detail-content -->
+                            <div id="activity_footer" clstag="shangpin|keycount|product|activityfooter"><div style="text-align: center;"><img data-lazyload="//img30.360buyimg.com/jgsq-productsoa/jfs/t3577/344/1077770157/80811/316f9e36/581c7263N82a0e9fc.jpg" alt="" class="ELazy-loading" src="//misc.360buyimg.com/lib/img/e/blank.gif"><br></div></div>
+                        </div>
+                    </div>
+                    <div id="J-detail-nav" class="detail-content-nav">
+                        <ul id="J-detail-content-tab" class="detail-content-tab"></ul>
+                    </div>
+                </div>
+                    <div class="clb"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="m m-content guarantee" id="guarantee">
+            <div class="mt">
+                <h3>售后保障</h3>
+            </div>
+            <div class="mc">
+                <div class="item-detail item-detail-copyright">
+                    <div class="serve-agree-bd">
+                        <dl>
+
+                            <dt>
+                                <i class="goods"></i>
+                                <strong>厂家服务</strong>
+                            </dt>
+                            <dd>
+                                {{Product.ServiceInfo}}
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clb"></div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(function() {
+
+        $('#choose-attrs .p-choose .dd .item').delegate('a', 'click', function(event) {
+            console.log("select attr");
+            $(this).parent().addClass("selected").siblings().removeClass("selected");
+            $('#choose-attrs .p-choose .dd .item').find('div').removeClass('selected-value');
+            $(this).closest('div').addClass('selected');
+        });
+    });
+
+    function chooseAttrs(item){
+        $(item).parent().addClass("selected").siblings().removeClass("selected");
+    }
+</script>
+<script type="text/javascript">
+
+
+    var app = angular.module('myApp', ['me-lazyimg']);
+
+    //自定义指令指定ng-repeat加载完数据后执行的方法
+    app.directive('onFinishRender',['$timeout', '$parse', function ($timeout, $parse) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attr) {
+                if (scope.$last === true) {
+                    $timeout(function () {
+                        scope.$emit('ngRepeatFinished'); //事件通知
+                        var fun = scope.$eval(attr.onFinishRender);
+                        if(fun && typeof(fun)=='function'){
+                            fun();  //回调函数
+                        }
+                    });
+                }
+            }
+        }
+    }]);
+    app.controller('myCtrl', function ($scope, $http) {
+        $scope.Product={};
+        $scope.Product.Sku={};
+        $scope.Product.Title='';
+        $scope.Product.Image='';
+        $scope.Product.Sku.AttributeName='';
+        $scope.Product.Price=0;
+        $scope.ProductId="${ProductId}";
+        $scope.totalPages = 0;
+        $scope.pagedata = [];
+        $scope.selectAll=false;
+        $scope.sortcolumn='ProductId';
+        $scope.sorttype='desc';
+
+        $scope.args = {};
+        $scope.args.pageNumber = 1;
+        $scope.args.pageSize = 10;
+        $scope.args.sort={};
+        //商品组合下面没选项的不显示
+        $scope.showFilter = function (item) {
+            return (item.AttributeValue.length>0);
+        };
+        $scope.LoadProductData=function(){
+            $http({
+                method: "get",
+                url: '/api/product/'+$scope.ProductId,
+                data:$scope.args,
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            }).success(function (data, status) {
+                if (status === 200) {
+                    if (typeof data == "string" && data.indexOf("<script>") >= 0) {
+                        alert('登录超时，请重新登录！');
+                    }else{
+
+                        $scope.Product=data;
+                        $scope.Product.Album=data.ProductAlbum.split(',');
+                        $scope.Product.Image=data.ProductAlbum[0];
+                    }
+                }
+            });
+        };
+        $scope.chooseAttrs=function(myevent){
+            $(myevent.target).closest(".item").addClass("selected").siblings().removeClass("selected");
+
+            var chooseattr=$('#choose-attrs .p-choose .dd .item.selected');
+            $.each($scope.Product.SkuList,function(i, sku){
+
+                var attrs = sku.Attributes.split(',');
+                var flag=true;
+                $.each(chooseattr,function(i, selectattr) {
+                    var str=$(selectattr).attr("data-sku");
+                    if($.inArray(str,attrs)<0){
+                        flag=false;
+                    }
+                });
+
+                //当数组相同时选中该
+                if(flag){
+                    $scope.Product.Sku=sku;
+                    if(sku.SkuImg2&&sku.SkuImg2.length>4)
+                    {
+                        $scope.Product.Album=sku.SkuImg2.split(',');
+                        $scope.Product.Image=$scope.Product.Album[0];
+                    }
+
+                    console.info("skuid: " + sku.SkuId+",price:"+sku.SkuPrice);
+                }
+            });
+
+        };
+        $scope.chooseImage=function(myevent) {
+            $(myevent.target).closest("li").addClass("img_hover").siblings().removeClass("img_hover");
+            $scope.Product.Image=$(myevent.target).attr("data-img");;
+        };
+        //repeat绑定之后延迟执行
+        $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
+            console.log("ngRepeatFinished 开始执行延迟方法");
+            $scope.InitDefaultSku = function(){
+                console.log("InitDefaultSku");
+                //模拟点击第一个属性获得默认SKU
+                $('#choose-attrs .p-choose .dd .item.selected a').get(0).click();
+            };
+            //延迟执行方法2
+            $scope.InitSkuImg=function(){
+                console.log("InitSkuImg");
+
+            };
+        });
+
+        //数据初始化
+        $scope.LoadProductData();
+
+        });
+
+
+</script>
+</body>
+</html>

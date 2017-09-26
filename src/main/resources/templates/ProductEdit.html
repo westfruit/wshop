@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>商品编辑</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="renderer" content="webkit">
+
+    <style>
+        .disabled_1{border:1px solid #DDD;background-color:#F5F5F5;color:#ACA899;}
+    </style>
+    <style>
+        /*选择图片框样式*/
+        .div_imgfile {
+            width: 36px;
+            height: 36px;
+            text-align: center;
+            line-height: 36px;
+            font-family: 微软雅黑;
+            font-size: 16px;
+            border: 1px solid #efefef;
+            cursor: pointer;
+            background-image:url(/img/plus.png);
+            float:left;
+            margin: 0px;
+            margin-right: 5px;
+        }
+        /*选择图片框鼠标移入移出效果*/
+        .div_imgfile:hover {
+
+        }
+
+        .imgfile {
+            display: none;
+            float:right;
+        }
+
+        /*这里是图片预览容器样式*/
+        .div_imglook {
+            float: left;
+            overflow: visible;
+        }
+
+        /*单个图片预览模块样式*/
+        .lookimg {
+            width: 40px;
+            height: 40px;
+            box-sizing: border-box;
+            border: 1px solid #e9e9e9;
+            float: left;
+            margin-right: 4px;
+            position: relative;
+            line-height: 36px;
+        }
+
+        .lookimg img {
+            width: 100%;
+            height: 100%;
+        }
+
+        /*删除按钮样式*/
+        .lookimg_delBtn {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 10px;
+            height: 10px;
+            text-align: center;
+            line-height: 10px;
+
+            color: white;
+            font-size: 10px;
+            font-family: 微软雅黑;
+            display: block;
+            cursor: pointer;
+            background-color: mediumblue;
+        }
+
+        /*删除按钮移入移出效果*/
+        .lookimg_delBtn:hover {
+            opacity: 1;
+        }
+
+        /*上传进度条样式*/
+        .lookimg_progress {
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            height: 2px;
+            background-color: #e0e0e0;
+            box-sizing: border-box;
+            border: none;
+            display: none;
+        }
+
+        .lookimg_progress div {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            height: 100%;
+            width: 0px;
+            background-color: #e9cc2e;
+        }
+
+
+
+    </style>
+    <style>
+        .clearfix{height:0px;clear:both;}
+        .top20{margin-top:20px;}
+        .input-short{width:50px;}
+        .input-normal{width:80px;}
+        .input-long{width:200px;}
+        .textarea-normal{width:300px;min-height:100px;}
+        .textarea-full{width:99%;min-height:100px;}
+        .input-img{border:none;width:0px;color:white;background-color:white;}
+        .margin20{margin:20px;}
+        a {
+            color: #666;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #c81623;
+        }
+        li{list-style:none;}
+        img{border: 0 none;}
+        body {
+            background: #fff none repeat scroll 0 0;
+            color: #666;
+            font: 14px/150% Microsoft YaHei,Hiragino Sans GB,"u5b8bu4f53",sans-serif,tahoma,arial;
+        }
+
+        .choose-attrs{width:990px;clear:both;margin:20px auto;}
+        .choose-attrs .attrigroup{height:auto;width: auto;border:solid 1px #e5e5e5;margin-top:10px;padding:5px;overflow: auto;}
+        .choose-attrs .dt{min-height: 40px;width: 10%;float: left;border: none;margin-left:0px;}
+        .choose-attrs .dd{min-height:40px;height:auto;width: 90%;float:left;border:none;}
+        .choose-attrs .item{height:40px;float:left;padding:3px;margin: 5px;border:solid 1px #d6e9f8;line-height:36px;}
+        .choose-attrs a{margin:5px;}
+        .choose-skus {width:990px;clear:both;margin:20px auto;}
+        .choose-skus a{margin:5px;}
+        .choose-skus table{width:100%;margin-top:10px;border:solid 1px #e6e6e6;border-collapse: collapse;}
+        .choose-skus th{font-weight:bold;border:solid 1px #e5e5e5;height:30px;line-height:30px;padding:4px;}
+        .choose-skus td{border:solid 1px #e5e5e5;height:40px;line-height:30px;padding:4px;}
+        .choose-skus td img{margin:0px;border: 0 none;vertical-align: middle;}
+        .choose-skus .mutipic{width:270px;}
+        .choose-skus .singlepic{width:90px;}
+        .form-submit{width:990px;height:40px;clear:both;margin:20px auto;}
+
+        .tabs {
+            width:1000px;
+            padding:50px;
+            height:auto;
+            overflow:auto;
+            margin:50px 10%;
+            border:1px solid #ccc;
+        }
+        .tab-title {
+            display:flex;
+            background:#fff;
+        }
+        .tab-title a {
+            display:block;
+            text-decoration:none;
+            text-align:center;
+            width:25%;
+            height:40px;
+            flex:1;
+            padding:0 10px;
+            color:#666;
+            font-size:16px;
+            line-height:40px;
+            border-right:1px solid #f40;
+            border-bottom:2px solid #f40;
+        }
+        .tab-title a:last-child {
+            border-right:0;
+        }
+        .tab-title a.active {
+            color:#f40;
+            border-bottom:0;
+        }
+        .tab-content {
+            height:100%;
+            border: solid 1px #e9e9e9;
+            border-top:none;
+            margin-top: -7px;
+            padding-top:30px;
+        }
+        .tab-content .cont {
+            display:none;
+            overflow:hidden;
+
+        }
+        .tab-content li{display:block;}
+
+        .form{}
+        .form .dt{width:200px;padding: 5px 0px;}
+        .form .dd{padding: 5px 0px;}
+        .form table .dd ul{padding:0px;}
+        .form table .dd ul li{margin:0px;margin-top:10px;}
+        .form table .dd ul li .input{width:200px;height:20px;}
+        .form table .dd ul li .select{width:205px;height:25px;}
+        .form table .dd ul li .label{width:120px;height:20px;display: inline-block;}
+        .form table .dd ul li b{color:red;margin:0 5px;}
+        .form .form-body{width:990px;margin:0px auto;clear: both;}
+        .form .form-submit{text-align:center;height:100px;line-height:100px;}
+        .form .content textarea{width: 0px; color: white; border: none; display: none; background-color: white;}
+        .form .hidden{width: 0px; color: white; border: none; display: none; background-color: white;}
+        .form .form-catebody{width:33%;float:left;    height: 250px;     overflow: auto;}
+        .form .form-catebody.last{width:34%;}
+        .form .form-catebody li{display:block;width:100%;height:30px;background-color:lightgoldenrodyellow;}
+        .form .form-catebody li:hover{background-color:burlywood;}
+        .form .form-catebody .select{background-color:#e9cc2e;}
+        .form .form-base .lookimg {
+            width: 60px!important;
+            height: 60px!important;
+            box-sizing: border-box;
+            border: 1px solid #e9e9e9;
+            float: left;
+            margin-right: 4px;
+            position: relative;
+        }
+        .form .form-base .div_imgfile {
+            width: 60px!important;
+            height: 60px!important;
+            text-align: center;
+            font-family: 微软雅黑;
+            font-size: 16px;
+            border: 1px solid #efefef;
+            cursor: pointer;
+            background-image:url(/img/plus-60.png)!important;
+            float:left;
+            margin: 0px;
+            margin-right: 5px;
+        }
+        .relation {
+            height: auto;
+            width: auto;
+            border: solid 1px #e5e5e5;
+            margin-top: 10px;
+            padding: 5px;
+            overflow: auto;
+        }
+        .relation li{
+            height: 40px;
+
+            float: left;
+            padding: 3px 10px;
+            margin: 5px;
+            border: solid 1px #d6e9f8;
+            line-height: 36px;
+            position: relative;
+        }
+        .relation li img{float:left;max-width:40px;max-height:40px;}
+        .relation li .delete{
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 10px;
+            height: 10px;
+            text-align: center;
+            line-height: 10px;
+            color: white;
+            font-size: 10px;
+            font-family: 微软雅黑;
+            display: block;
+            cursor: pointer;
+            background-color: mediumblue;}
+    </style>
+    <link  rel="stylesheet" href="/plugins/validform/css/style.css">
+</head>
+<body  ng-app="myApp" ng-controller="myCtrl"  >
+
+<form id="form1" name="form1" class="form" method="post"  method="post" enctype="application/x-www-form-urlencoded"  action="/admin/${ProductId}"  >
+
+    <div class="tabs">
+        <nav class="tab-title">
+            <a id="tab2-title" href="javascript:;" class="active" data-cont="tab2">基本信息</a>
+            <a id="tab3-title" href="javascript:;" data-cont="tab3">商品内容</a>
+            <a id="tab4-title" href="javascript:;" data-cont="tab4">商品组合</a>
+            <a id="tab5-title" href="javascript:;" data-cont="tab5">扩展信息</a>
+            <a id="tab6-title" href="javascript:;" data-cont="tab6">历史商品</a>
+        </nav>
+        <div class="tab-content" >
+            <section class="cont" id="tab2" name="tab2" lazy-container>
+                <div id="base-info" name="base-info" class="form-body form-base">
+                    <table>
+                        <tr>
+                            <td class="dt">商品标题：</td>
+                            <td class="dd">
+                                <input id="ProductId" name="ProductId" class="hidden" type="text"  datatype="n1-12" errormsg="商品必须是数字!" nullmsg="商品ID不可以为空!" value="${ProductId}">
+                                <input type="text" class="input-long" name="Title"  errormsg="2-100个字符!" nullmsg="请填写商品名称!" datatype="*2-100"  value="{{Product.Title}}">
+                                <span class="Validform_checktip" >*2-100个字符</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="dt">搜索关键词：</td>
+                            <td class="dd">
+                                <input type="text" class="input-long" name="SearchTitle"  value="{{Product.SearchTitle}}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="dt">内容摘要：</td>
+                            <td class="dd">
+                                <textarea type="text" class="textarea-normal" name="Summery">{{Product.Summery}}</textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="dt">商品分类：</td>
+                            <td class="dd">
+                                <input type="text" class="hidden" id="CateId" name="CateId"  value="{{Product.CateId}}">
+                                <input type="text" class="input-long" id="CateName" name="CateName"   value="{{Product.CateName}}"   errormsg="2-100个字符!" nullmsg="请选择分类!" datatype="*2-100">
+                                <a id="CategoryClick" href=":;">选择分类</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="dt">商品品牌：</td>
+                            <td class="dd">
+                                <input type="text" class="input-long" id="BrandName" name="BrandName"  value="{{Product.BrandName}}">
+                                <a  id="BrandClick" href=":;">选择品牌</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="dt">商品封面：</td>
+                            <td class="dd">
+                                <input type="text" name="ProductImg" class="skuimg hidden"  value="{{Product.ProductImg}}">
+                                <!--图片预览容器-->
+                                <div class="div_imglook"  ImgList>
+                                    <div ng-if="Product.ProductImg" class="lookimg" num="0" isup="1">
+                                        <img lazy-src="{{Product.ProductImg}}">
+                                        <div class="lookimg_delBtn" title="删除图片">×</div>
+                                    </div>
+                                    <div style="clear: both;"></div>
+                                </div>
+                                <div  class="div_imgfile" data-max="1"> </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="dt">商品相册：</td>
+                            <td class="dd">
+                                <input type="text" name="ProductAlbum" class="skuimg hidden"  value="{{Product.ProductAlbum}}">
+                                <!--图片预览容器-->
+                                <div class="div_imglook"  ImgList>
+                                    <div ng-repeat="albumPic in Product.Album"  class="lookimg" num="0" isup="1">
+                                        <img lazy-src="{{albumPic}}">
+                                        <div class="lookimg_delBtn" title="删除图片">×</div>
+                                    </div>
+                                    <div style="clear: both;"></div>
+                                </div>
+                                <div  class="div_imgfile" data-max="5"> </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="dt">动态属性：</td>
+                            <td class="dd">
+                                <div id="dynamicsAttr" >
+
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div class="form-submit form-body">
+                    <input id="next2" name="next2" class="submit" type="button" value="下一步">
+                </div>
+            </section>
+            <section class="cont" id="tab3" name="tab3">
+                <div name="form-content" class="form-body">
+                    <div class="dt">商品详情：</div>
+                    <div class="dd">
+                        <textarea id="Content" name="Content" class="content" datatype="*10-20000" errormsg="详情10-20000个字符,提交时验证!" nullmsg="详情不能为空!">${Content}</textarea>
+                    </div>
+                 </div>
+                <div name="form-content" class="form-body">
+                    <div class="dt">商品服务：</div>
+                    <div class="dd">
+                        <textarea type="text" class="textarea-full" name="ServiceInfo">${ServiceInfo}</textarea>
+                    </div>
+                </div>
+                <div class="form-submit form-body">
+                    <input id="prve3" type="button" value="上一步">
+                    <input id="next3" class="submit" type="button" value="下一步">
+                </div>
+            </section>
+            <section class="cont" id="tab4" name="tab4" lazy-container>
+                <div name="choose-attrs" class="choose-attrs form-body">
+
+                    <div style="width:100%;height:24px;">
+                        <input type="text" class="input-short"><a href="javascript:;"  ng-click="addAttrs($event);">添加规格</a>(颜色，内存，套餐等。未选中的属性不会被保存)
+                    </div>
+                    <div ng-repeat="attribute in Product.AttributeList" on-finish-render="InitDefaultSku()" id="choose-attr-1" class="li p-choose attrigroup" data-type="{{attribute.AttributeName}}" data-idx="0">
+                        <div class="dt">选择{{attribute.AttributeName}}：
+                            <input type="hidden" name="AttrvalueId" value="{{attribute.AttributeId}}" >
+                            <input type="hidden" name="AttributeName_{{attribute.AttributeId}}" value="{{attribute.AttributeName}}" >
+                        </div>
+                        <div class="dd">
+                            <div ng-repeat="option in attribute.AttributeValue" ng-class='{selected:$first}' class="item" data-sku="{{option.OptionId}}" data-value="{{option.OptionName}}" title="{{option.OptionName}}">
+                                <b></b>
+                                <input type="checkbox" name="OptionId" value="{{option.OptionId}}" ng-checked="option.ProductId" ng-click="chooseAttrs(option);">
+                                <!--不要删除skuimg样式上传图片用-->
+                                <input type="hidden" class="skuimg"  name="OptionImg_{{option.OptionId}}"  value="{{option.OptionImg}}">
+                                <input type="hidden"  name="AttributeId_{{option.OptionId}}"  value="{{attribute.AttributeId}}">
+                                <input type="hidden"  name="AttributeName_{{option.OptionId}}"  value="{{attribute.AttributeName}}">
+                                <!--图片预览容器-->
+                                <div class="div_imglook">
+                                    <div ng-if="option.OptionImg" class="lookimg" num="0" isup="1">
+                                        <img lazy-src="{{option.OptionImg}}">
+                                        <div class="lookimg_delBtn" title="删除图片">×</div>
+                                    </div>
+                                    <div style="clear: both;"></div>
+                                </div>
+                                <div  class="div_imgfile" data-max="1"> </div>
+                                <i><input type="text" name="OptionName_{{option.OptionId}}" class="input-normal" ng-model="option.OptionName"></i>
+
+                            </div>
+                            <div class="item" style="width:auto;">
+                                <input type="text" class="input-normal">
+                                <input type="hidden" class="skuimg"  value="">
+                                <!--图片预览容器-->
+                                <div class="div_imglook">
+                                    <div style="clear: both;"></div>
+                                </div>
+                                <div  class="div_imgfile" data-max="1"> </div>
+
+                                <a href="javascript:;" style="display:block;float:right;line-height:40px;"  title="(白色，银色，黑色等)" ng-click="addAttrsValue($event,attribute);">添加属性</a>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+
+                    <div id="choose-results" class="li" style="display:none"><div class="dt">已选择</div><div class="dd">{{Product.Title}}</div></div>
+                </div>
+                <div name="SkuBody"  class="choose-skus form-body" >
+                    <div>不填写商品编码或商品价格<=0 ，将被视为无效组合商品</div>
+                    <table >
+                        <tr>
+                            <th ng-repeat="attribute in Product.SelectSpec">{{attribute.AttributeName}}</th>
+                            <th>商品编码</th>
+                            <th>商品价格</th>
+                            <th>商品库存</th>
+                            <th>展示图片</th>
+                            <th>列表图片</th>
+                            <th>操作</th>
+                        </tr>
+                        <tr ng-repeat="Comb in Product.SkuCombine"  data-id="{{Comb.Sku.SkuId}}" class="disabled_{{Comb.Sku.IsDelete}}">
+                            <input type="hidden" name="SkuId" value="{{Comb.Sku.SkuId}}">
+                            <input type="hidden" name="CombineId_{{Comb.Sku.SkuId}}" value="{{Comb.CombineId}}">
+                            <input type="hidden" name="CombineName_{{Comb.Sku.SkuId}}" value="{{Comb.CombineName}}">
+                            <input type="hidden" name="IsDelete_{{Comb.Sku.SkuId}}" value="{{Comb.Sku.IsDelete}}">
+                            <td  ng-repeat="Attr in Comb" ng-if="Attr.OptionId" data-value="{{Attr.OptionId}}" data-name="{{Attr.OptionName}}">{{Attr.OptionName}}</td>
+                            <td><input type="text" class="input-normal" name="CommodityCode_{{Comb.Sku.SkuId}}" value="{{Comb.Sku.CommodityCode}}"></td>
+                            <td><input type="text" class="input-short" name="SkuPrice_{{Comb.Sku.SkuId}}" value="{{Comb.Sku.SkuPrice}}"></td>
+                            <td><input type="text" class="input-short" name="StockQuantity_{{Comb.Sku.SkuId}}" value="{{Comb.Sku.StockQuantity}}"></td>
+                            <td class="singlepic" >
+                                <input type="hidden" class="skuimg" name="SkuImg1_{{Comb.Sku.SkuId}}" value="{{Comb.Sku.SkuImg1}}">
+                                <!--图片预览容器-->
+                                <div class="div_imglook">
+                                    <div ng-if="Comb.Sku.SkuImg1" class="lookimg" num="0" isup="1">
+                                        <img lazy-src="{{Comb.Sku.SkuImg1}}">
+                                        <div class="lookimg_delBtn" title="删除图片">×</div>
+                                    </div>
+                                    <div style="clear: both;"></div>
+                                </div>
+                                <div  class="div_imgfile" data-max="1"> </div>
+
+                            </td>
+                            <td class="mutipic" >
+                                <input type="hidden" class="skuimg" name="SkuImg2_{{Comb.Sku.SkuId}}" value="{{Comb.Sku.SkuImg2}}">
+                                <!--图片预览容器-->
+                                <div class="div_imglook"  ImgList>
+                                    <div ng-repeat="skuImg in Comb.Sku.ImgList" class="lookimg" num="{{$index}}" isup="1">
+                                        <img lazy-src="{{skuImg}}">
+                                        <div class="lookimg_delBtn" title="删除图片">×</div>
+                                    </div>
+                                    <div style="clear: both;"></div>
+                                </div>
+                                <div  class="div_imgfile" data-max="5"> </div>
+
+                            </td>
+                            <td>
+                                <a  ng-if="Comb.Sku.IsDelete==0"  href="javascript:;" ng-click="disabledSku(Comb.Sku)" >禁用</a>
+                                <a ng-if="Comb.Sku.IsDelete!=0" href="javascript:;"  ng-click="recoverySku(Comb.Sku)">启用</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="form-submit form-body">
+                    <input id="prve4" type="button" value="上一步">
+                    <input id="next4" class="submit" type="button" value="下一步">
+                </div>
+            </section>
+            <section class="cont" id="tab5" name="tab5" lazy-container>
+                <div class="form-body relation" >
+                    <div class="dt" >附加商品</div>
+                    <div class="dd" >
+                        <ul id="GiftBody">
+                            <li  ng-repeat="gift in Product.ProductGiftList"><input type="hidden" name="GiftId" value="{{gift.ProductId2 }}"><img lazy-src="{{gift.ProductImg}}"> <span>{{gift.Title}}</span><a class="delete" onclick="$(this).parent().remove();" href="javascript:;">x</a></li>
+                            <li><a id="AddGiftProduct" class="additem" href="javascript:;">添加</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-body relation" >
+                    <div class="dt" >相关商品</div>
+                    <div class="dd" >
+                        <ul id="RelatedBody">
+                            <li  ng-repeat="related in Product.ProductRelatedList"><input type="hidden" name="RelatedId" value="{{related.ProductId2}}"><img lazy-src="{{related.ProductImg}}"> <span>{{related.Title}}</span><a class="delete" onclick="$(this).parent().remove();" href="javascript:;">x</a></li>
+                            <li><a  id="AddRelatedProduct" class="additem" href="javascript:;">添加</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-submit form-body">
+                    <input id="prve5" type="button" value="上一步">
+                    <input id="next5"  type="button" value="历史商品">
+                    <input id="nextlast" class="submit" type="button" value="提交表单">
+
+                </div>
+            </section>
+            <section class="cont" id="tab6" name="tab6" lazy-container>
+                <div class="form-body choose-skus" >
+                    <table>
+                        <tr>
+                            <th>组合</th>
+                            <th>组合名称</th>
+                            <th>库存</th>
+                            <th>商品编号</th>
+                            <th>价格</th>
+                            <th>图片</th>
+                            <th>是否可用</th>
+                        </tr>
+                    <tr ng-repeat="oldSku in Product.SkuList"  class="disabled_{{oldSku.IsDelete}}" >
+                        <td>{{oldSku.SkuId}}</td>
+                        <td>{{oldSku.AttributeName}}</td>
+                        <td>{{oldSku.StockQuantity}}</td>
+                        <td>{{oldSku.CommodityCode}}</td>
+                        <td>{{oldSku.SkuPrice}}</td>
+                        <td>{{oldSku.SkuImg1}}</td>
+                        <td>
+                            <span ng-if="oldSku.IsDelete==0">是</span>
+                            <span ng-if="oldSku.IsDelete==1">否</span>
+                        </td>
+                    </tr>
+                    </table>
+                </div>
+                <div class="form-submit form-body">
+                    <input id="prve6" type="button" value="返回表单">
+                </div>
+            </section>
+        </div>
+    </div>
+
+
+
+
+</form>
+<script src="/plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="/plugins/angular/angular.1.4.6.min.js"></script>
+<script src="/plugins/me-lazyimg/me-lazyimg.js"></script>
+<script src="/plugins/validform/js/Validform_v5.3.2.js"></script>
+<script type="text/javascript" src="/plugins/lhgdialog/lhgdialog.js?skin=idialog"></script>
+
+<script src="/plugins/imgupload/IMGUP.js"></script>
+
+<script src="/plugins/kindeditor/kindeditor-all.js"></script>
+<script src="/plugins/kindeditor/lang/zh-CN.js"></script>
+
+<script type="text/javascript">
+    WSHOP=window.WSHOP || {};
+    WSHOP.ProductId='${ProductId}';
+    WSHOP.CateId='${CateId}';
+    WSHOP.CateName='${CateName}';
+    WSHOP.BrandName='${BrandName}';
+    $(function() {
+
+        $("#tab2").Validform({
+            btnSubmit:"#next2",
+            tiptype:3,
+            ignoreHidden:false,
+            dragonfly:false,
+            tipSweep:false,
+            beforeCheck:function(curform){
+                //在表单提交执行验证之前执行的函数，curform参数是当前表单对象。
+                //这里明确return false的话将不会继续执行验证操作;
+            },
+            beforeSubmit:function(curform){
+                //在验证成功后，表单提交前执行的函数，curform参数是当前表单对象。
+                //这里明确return false的话表单将不会提交;
+            },
+            callback:function(data){
+                //返回数据data是json对象，{"info":"demo info","status":"y"}
+                //info: 输出提示信息;
+                //status: 返回提交数据的状态,是否提交成功。如可以用"y"表示提交成功，"n"表示提交失败，在ajax_post.php文件返回数据里自定字符，主要用在callback函数里根据该值执行相应的回调操作;
+                //你也可以在ajax_post.php文件返回更多信息在这里获取，进行相应操作；
+                //ajax遇到服务端错误时也会执行回调，这时的data是{ status:**, statusText:**, readyState:**, responseText:** }；
+
+                //这里执行回调操作;
+                //注意：如果不是ajax方式提交表单，传入callback，这时data参数是当前表单对象，回调函数会在表单验证全部通过后执行，然后判断是否提交表单，
+                // 如果callback里明确return false，则表单不会提交，如果return true或没有return，则会提交表单。
+                console.log("tab2验证通过，切换到tab3");
+                switchTab("tab3");
+            }
+        });
+        var editor = KindEditor.create('.content',
+                {
+                    width: '100%',
+                    height: '400px',
+                    resizeType: 1,
+                    filePostName: "file",
+                    uploadJson: "/api/uploadfile/"+1,
+                    fileManagerJson: "/api/uploadfile/"+1,
+                    allowFileManager: false
+                });
+
+        $("#tab3").Validform({
+            btnSubmit:"#next3",
+            tiptype:3,
+            ignoreHidden:false,
+            dragonfly:false,
+            tipSweep:false,
+            beforeCheck:function(curform){
+                //在表单提交执行验证之前执行的函数，curform参数是当前表单对象。
+                //这里明确return false的话将不会继续执行验证操作;
+                editor.sync();
+
+            },
+            beforeSubmit:function(curform){
+                //在验证成功后，表单提交前执行的函数，curform参数是当前表单对象。
+                //这里明确return false的话表单将不会提交;
+
+            },
+            callback:function(data){
+                //返回数据data是json对象，{"info":"demo info","status":"y"}
+                //info: 输出提示信息;
+                //status: 返回提交数据的状态,是否提交成功。如可以用"y"表示提交成功，"n"表示提交失败，在ajax_post.php文件返回数据里自定字符，主要用在callback函数里根据该值执行相应的回调操作;
+                //你也可以在ajax_post.php文件返回更多信息在这里获取，进行相应操作；
+                //ajax遇到服务端错误时也会执行回调，这时的data是{ status:**, statusText:**, readyState:**, responseText:** }；
+
+                //这里执行回调操作;
+                //注意：如果不是ajax方式提交表单，传入callback，这时data参数是当前表单对象，回调函数会在表单验证全部通过后执行，然后判断是否提交表单，
+                // 如果callback里明确return false，则表单不会提交，如果return true或没有return，则会提交表单。
+                console.log("tab3验证通过，切换到tab4");
+                switchTab("tab4");
+            }
+        });
+
+        $("#tab4").Validform({
+            btnSubmit:"#next4",
+            tiptype:3,
+            ignoreHidden:false,
+            dragonfly:false,
+            tipSweep:false,
+            beforeCheck:function(curform){
+                //在表单提交执行验证之前执行的函数，curform参数是当前表单对象。
+                //这里明确return false的话将不会继续执行验证操作;
+            },
+            beforeSubmit:function(curform){
+                //在验证成功后，表单提交前执行的函数，curform参数是当前表单对象。
+                //这里明确return false的话表单将不会提交;
+
+            },
+            callback:function(data){
+                //返回数据data是json对象，{"info":"demo info","status":"y"}
+                //info: 输出提示信息;
+                //status: 返回提交数据的状态,是否提交成功。如可以用"y"表示提交成功，"n"表示提交失败，在ajax_post.php文件返回数据里自定字符，主要用在callback函数里根据该值执行相应的回调操作;
+                //你也可以在ajax_post.php文件返回更多信息在这里获取，进行相应操作；
+                //ajax遇到服务端错误时也会执行回调，这时的data是{ status:**, statusText:**, readyState:**, responseText:** }；
+
+                //这里执行回调操作;
+                //注意：如果不是ajax方式提交表单，传入callback，这时data参数是当前表单对象，回调函数会在表单验证全部通过后执行，然后判断是否提交表单，
+                // 如果callback里明确return false，则表单不会提交，如果return true或没有return，则会提交表单。
+                console.log("tab4验证通过，切换到tab5");
+                switchTab("tab5");
+            }
+        });
+
+        $("#form1").Validform({
+            btnSubmit:"#nextlast",
+            tiptype:3,
+            ignoreHidden:false,
+            dragonfly:false,
+            tipSweep:false,
+            beforeCheck:function(curform){
+                //在表单提交执行验证之前执行的函数，curform参数是当前表单对象。
+                //这里明确return false的话将不会继续执行验证操作;
+            },
+            beforeSubmit:function(curform){
+                //在验证成功后，表单提交前执行的函数，curform参数是当前表单对象。
+                //这里明确return false的话表单将不会提交;
+                console.log("验证通过提交表单");
+
+                //$("#form1").trigger("submit");
+            },
+            callback:function(data){
+                //返回数据data是json对象，{"info":"demo info","status":"y"}
+                //info: 输出提示信息;
+                //status: 返回提交数据的状态,是否提交成功。如可以用"y"表示提交成功，"n"表示提交失败，在ajax_post.php文件返回数据里自定字符，主要用在callback函数里根据该值执行相应的回调操作;
+                //你也可以在ajax_post.php文件返回更多信息在这里获取，进行相应操作；
+                //ajax遇到服务端错误时也会执行回调，这时的data是{ status:**, statusText:**, readyState:**, responseText:** }；
+
+                //这里执行回调操作;
+                //注意：如果不是ajax方式提交表单，传入callback，这时data参数是当前表单对象，回调函数会在表单验证全部通过后执行，然后判断是否提交表单，
+                // 如果callback里明确return false，则表单不会提交，如果return true或没有return，则会提交表单。
+                console.info(data);
+
+            }
+        });
+
+        $("#next5").click(function(){
+            switchTab("tab6");
+        });
+        $("#prve3").click(function(){
+            switchTab("tab2");
+        });
+        $("#prve4").click(function(){
+            switchTab("tab3");
+        });
+        $("#prve5").click(function(){
+            switchTab("tab4");
+        });
+        $("#prve6").click(function(){
+            switchTab("tab5");
+        });
+
+        //添加相关商品
+        $('#AddRelatedProduct').dialog({
+            content:'url:/html/ProductDialog.html',
+            title: '商品选择',
+            lock: true,
+            width: 900,
+            height: 450,
+            data: function(backdata) {
+                if (backdata) {
+                    var ul=$("#RelatedBody");
+                    var li="<li><input type='hidden' name='RelatedId' value='"+backdata.id+"' ><img src='"+backdata.img+"' > <span>"+backdata.title+"</span><a class='delete' onclick='$(this).parent().remove();'  href='javascript:;'>x</a></li>";
+                    ul.prepend(li);
+                }
+            }
+        });
+        //添加赠品
+        $('#AddGiftProduct').dialog({
+            content:'url:/html/ProductDialog.html',
+            title: '商品选择',
+            lock: true,
+            width: 900,
+            height: 450,
+            data: function(backdata) {
+                if (backdata) {
+                    var ul=$("#GiftBody");
+                    var li="<li><input type='hidden' name='GiftId' value='"+backdata.id+"' ><img src='"+backdata.img+"' > <span>"+backdata.title+"</span><a class='delete' onclick='$(this).parent().remove();' href='javascript:;'>x</a></li>";
+                    ul.prepend(li);
+                }
+            }
+        });
+
+//        $("#AddGiftProduct").click(function(){
+//            var ul=$(this).closest(".form-body").find("ul");
+//            var li="<li><img src='/1503978437980.jpg' > <span>商品标题</span><a class='delete' href='javascript:;'>x</a></li>";
+//            ul.prepend(li);
+//        });
+//        $("#AddRelatedProduct").click(function(){
+//            var ul=$(this).closest(".form-body").find("ul");
+//            var li="<li><img src='/1503978998692.jpg' > <span>商品标题</span><a class='delete' href='javascript:;'>x</a></li>";
+//            ul.prepend(li);
+//        });
+
+
+
+        ProductAttributeInit(WSHOP.CateId);
+
+        //打开分类选择窗口
+        $('#CategoryClick').dialog({
+            content:'url:/html/CategoryDialog.html',
+            title: '类目选择',
+            lock: true,
+            width: 900,
+            height: 450,
+            data: function(backdata) {
+                if (backdata) {
+                    $('#CateId').val(backdata.id);
+                    $('#CateName').val(backdata.path);
+                    $('#CatePath').html(backdata.path);
+                    ProductAttributeInit(backdata.id)
+                }
+            }
+        });
+
+        //打开品牌选择窗口
+        $('#BrandClick').dialog({
+            content:'url:/html/BrandDialog.html',
+            title: '品牌选择',
+            lock: true,
+            width: 600,
+            height: 450,
+            data: function(data) {
+                if (data) {
+                    $('#BrandName').val(data.title);
+                }
+            }
+        });
+
+
+        var secId = $('.active').get(0).dataset["cont"];
+        $("#" + secId).css('display', 'block');
+//        $('.tab-title').on('click', 'a', function(e) {
+//            var cur = $(".active");
+//            cur.removeClass("active");
+//            var currentSec = cur.get(0).dataset["cont"];
+//            $("#" + currentSec).css('display', 'none');
+//            this.classList.add("active");
+//            var secID = this.dataset["cont"];
+//            $(this).offset().top;
+//            $("#" + secID).css('display', 'block');
+//        })
+
+
+    });
+
+    function switchTab(tab){
+        $(".active").removeClass("active");
+        var item=$("#"+tab+"-title");
+        var itemBody=$("#" + tab);
+
+        item.attr("class","active");
+        $(".cont").css('display', 'none');
+        itemBody.css('display', 'block');
+    }
+
+
+    //获取商品动态属性
+    function ProductAttributeInit(categoryId) {
+
+        $("#dynamicsAttr").empty();
+        $.ajax({
+            type: "post",
+            url: "/api/attribute",
+            //data: JSON.stringify({'categoryId':categoryId,'productId':WSHOP.ProductId}),//json提交方式
+            data: {'categoryId':categoryId,'productId':WSHOP.ProductId},//表单提交方式
+            //contentType: "application/json;charset:utf-8",//json提交方式,后台用@RequestBody接收
+            contentType : "application/x-www-form-urlencoded; charset=UTF-8",//表单提交方式，后台用@RequestParam接收
+            dataType: "json",
+            success: function(data) {
+                if (data != null && data != 'undefined') {
+
+                    var attrs = "0";
+                    var form = "<ul>";
+                    $(data).each(function(i) {
+                        var isMust=this.IsMust == "1" ? "<b>*</b>" : "";
+                        var control = "<li title=\"" + this.PromptText + "\">";
+                        var controlName = "Dynamic_" + this.AttributeId;
+                        var controlValue = ((this.Attributes.length > 0) ? this.Attributes[0].OptionValue : "");
+                        control+="<input name='DynamicId' type='hidden' value='"+this.AttributeId+"'>";
+                        control += "<label class=\"label\">" +this.AttributeName +"：</label>";
+                        attrs += "," + this.AttributeId;
+
+                        //0:TextBox,1:DropdownList,2:RadioList,3:Checkboxes,4:Datepicker,5:ColorSquares,6:MultilineTextbox,7:FileUpload
+                        if (this.ControlType == 0) {
+                            control +="<input type='text' class='input' name='" + controlName + "' value='" + controlValue + "'>";
+
+                        } //DropdownList
+                        else if (this.ControlType == 1) {
+                            control += "<select name='" + controlName + "' class='select'>";
+                            $(this.Attributes).each(function(j) {
+                                control += "<option value=\"" +
+                                        this.OptionValue +
+                                        "\" " +
+                                        ((this.Selected == 1) ? "selected" : "") +
+                                        ">" +
+                                        this.OptionValue +
+                                        "</option>";
+                            });
+                            control += "</select>";
+                        } //RadioList
+                        else if (this.ControlType == 2) {
+                            $(this.Attributes).each(function(j) {
+                                var item_id = "item_" + this.OptionId;
+                                control += "<input type=\"radio\" name=\"" +
+                                        controlName +
+                                        "\" id=\"" +
+                                        item_id +
+                                        "\" value=\"" +
+                                        this.OptionValue +
+                                        "\" " +
+                                        ((this.Selected == true) ? "checked" : "") +
+                                        ">";
+                                control += "<label for=\"" + item_id + "\">" + this.OptionValue + "</label>&nbsp;&nbsp;";
+                            });
+
+                        } //Checkboxes
+                        else if (this.ControlType == 3) {
+
+                            $(this.Attributes).each(function(j) {
+                                var item_id = "item_" + this.OptionId;
+
+                                control += "<input type=\"checkbox\" name=\"" +
+                                        controlName +
+                                        "\" id=\"" +
+                                        item_id +
+                                        "\" value=\"" +
+                                        this.OptionValue +
+                                        "\" ";
+                                control += ((this.Selected == true) ? "checked" : "") + " >";
+                                control += "<label for=\"" + item_id + "\">" + this.OptionValue + "</label>&nbsp;&nbsp;";
+                            });
+
+                        } else if (this.ControlType == 4) {
+                            control += "<input type=\"text\" name=\"" +
+                                    controlName +
+                                    "\"  onfocus=\"WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})\"  value=\"" +
+                                    controlValue +
+                                    "\"  />";
+                        } else if (this.ControlType == 5) {
+
+                        } else if (this.ControlType == 6) {
+                            control += " <textarea name=\"" +
+                                    controlName +
+                                    "\" rows=\"4\" cols=\"20\">" +
+                                    controlValue +
+                                    "</textarea>";
+                        } else if (this.ControlType == 7) {
+
+                        }
+                        control += isMust+"</li>";
+
+                        form += control;
+                    });
+                    form += "</ul>";
+                    $("#dynamicsAttr").append(form);
+                    $("#txtAttrs").val(attrs);
+                } //end if
+
+            },
+            error: function(msg, timeout, message) {
+                var contentType = msg.getResponseHeader("Content-Type");
+                if (msg.status === 200 && contentType.toLowerCase().indexOf("text/html") >= 0) {
+                    window.location.reload();
+                }
+            }
+        });
+
+
+        return false;
+    }
+
+</script>
+
+<script type="text/javascript">
+    var app = angular.module('myApp', ['me-lazyimg']);
+    //自定义指令指定ng-repeat加载完数据后执行的方法
+    app.directive('onFinishRender',['$timeout', '$parse', function ($timeout, $parse) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attr) {
+                if (scope.$last === true) {
+                    $timeout(function () {
+                        scope.$emit('ngRepeatFinished'); //事件通知
+                        var fun = scope.$eval(attr.onFinishRender);
+                        if(fun && typeof(fun)=='function'){
+                            fun();  //回调函数
+                        }
+                    });
+                }
+            }
+        }
+    }]);
+    app.controller('myCtrl', function ($scope, $http) {
+        $scope.CateId=1;
+        $scope.UserId=1;
+        $scope.Product={};
+        $scope.Product.Sku={};
+        $scope.Product.AttributeList=[];
+        $scope.Product.SelectSpec={};
+        $scope.Product.SkuCombine={};
+        $scope.Product.Title='';
+        $scope.Product.Image='';
+        $scope.Product.Sku.AttributeName='';
+        $scope.Product.Price=0;
+        $scope.ProductId=${ProductId};
+
+        //Sku删除
+        $scope.disabledSku = function (item) {
+            item.IsDelete=1;
+            $scope.$apply();//需要手动刷新
+
+        };
+        //Sku恢复
+        $scope.recoverySku = function (item) {
+            item.IsDelete=0;
+            $scope.$apply();//需要手动刷新日志会报错没有关系
+
+        };
+        $scope.addAttrs=function(myevent){
+
+
+            var data={};
+            data.AttributeId=parseInt((new Date()).valueOf().toString().substr(7,6));
+            data.AttributeName=$(myevent.target).siblings("input").val();
+            data.Description=data.AttributeName;
+            data.ProductId=$scope.ProductId;
+            data.AttributeValue=[];
+            $scope.Product.AttributeList.push(data);
+            $(myevent.target).siblings(":text").val("");
+
+            //ajax保存到后台由于表单里面已经提交了规格值，所以不需要异步保存了 表单值 AttrvalueId
+//            $http({
+//                method: "post",
+//                url: '/api/addattribute/',
+//                data:data,
+//                headers: {
+//                    'Content-Type': 'application/json; charset=utf-8'
+//                }
+//            }).success(function (data, status) {
+//                if (status === 200) {
+//                    if (typeof data == "string" && data.indexOf("<script>") >= 0) {
+//                        alert('登录超时，请重新登录！');
+//                    }else{
+//                        console.log("addattribute:"+data);
+//                    }
+//                }
+//            });
+        };
+
+        $scope.addAttrsValue=function(myevent,attribute){
+            var attrImg=$(myevent.target).siblings(".skuimg").last();
+            var attrName=$(myevent.target).siblings(":text").last();
+            var imgsLook=$(myevent.target).siblings(".div_imglook").find(".lookimg");
+            var option={};
+            option.AttributeId=attribute.AttributeId;
+            option.AttributeName=attribute.AttributeName;
+            option.IsUse=0;
+            option.OptionId=parseInt((new Date()).valueOf().toString().substr(6,7));
+            option.OptionImg=attrImg.val();
+            option.OptionName=attrName.val();
+            option.ProductId=0;//$scope.Product.ProductId;
+            attribute.AttributeValue.push(option);
+            attrImg.val("");
+            attrName.val("");
+            imgsLook.remove();
+
+            //ajax保存到后台,由于表单里面已经提交了规格值，所以不需要异步保存了 表单值 OptionId
+//            $http({
+//                method: "post",
+//                url: '/api/addattrvalue/',
+//                data:option,
+//                headers: {
+//                    'Content-Type': 'application/json; charset=utf-8'
+//                }
+//            }).success(function (data, status) {
+//                if (status === 200) {
+//                    if (typeof data == "string" && data.indexOf("<script>") >= 0) {
+//                        alert('登录超时，请重新登录！');
+//                    }else{
+//                        console.log("addattrvalue:"+data);
+//                    }
+//                }
+//            });
+        };
+        $scope.chooseAttrs=function(option){
+
+
+            if(option.ProductId>0){
+                option.ProductId=0;
+
+            }else {
+                option.ProductId=$scope.Product.ProductId;
+            }
+            $scope.InitDefaultSku();
+        };
+        //捕获 emited event
+        $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
+            console.log("ngRepeatFinished");
+            $scope.InitDefaultSku = function(){
+                $scope.InitProductData();
+            };
+        });
+		//笛卡尔乘积递归方法
+		$scope.DescartesRecursive=function(index,list,map,maplist){
+			for(var i=0;i<list[index].AttributeValue.length;i++){
+				var item=list[index].AttributeValue[i];
+				var newmap=[];
+				newmap.push(item);
+				newmap=map.concat(newmap);
+				//递归主列表每一个列表值使其相乘，相当于多个for循环嵌套
+				if(index<list.length-1){
+					$scope.DescartesRecursive(index+1,list,newmap,maplist);
+				}else{//最后一个列表值，可以组装数据了
+					maplist.push(newmap);
+				}
+			}
+		};		
+
+        $scope.InitProductData=function(){
+            
+            var selectSpec=[];
+            $.each($scope.Product.AttributeList,function(i, group){
+                var flag=false;
+                var attriList={};
+                attriList.AttributeId=group.AttributeId;
+                attriList.AttributeValue=[];
+                attriList.ProductId=group.ProductId;
+                attriList.AttributeName=group.AttributeName;
+
+
+                $.each(group.AttributeValue,function(j, option) {
+                    if(option.ProductId>0){
+                        flag = true;
+                        attriList.AttributeValue.push(option);
+                    }
+                });
+
+                if(flag){
+					console.log('打印选中的SKU选项');
+                    console.info(attriList);
+                    selectSpec.push(attriList)
+                }
+            });
+			
+            $scope.Product.SelectSpec=selectSpec;
+			
+			//获得选中属性的笛卡尔乘积
+			var result = [];//组合成产品集
+	        $scope.DescartesRecursive(0,selectSpec,[],result);//索引从0开始
+			console.log('打印选中属性的笛卡尔乘积');
+			console.info(result);
+			
+			console.log('打印已保存的SKU');
+			console.info($scope.Product.SkuList);
+
+            //如果在此处将sku绑定为选项的一个子集将会方便展示
+            $.each($scope.Product.SkuList,function(i, sku){
+                var attrs=sku.Attributes.split(',');
+                $.each(result,function(j, selectattr) {
+                    var flag=true;
+                    $.each(selectattr,function(k, option) {
+                        if(!option.OptionId){
+                            return true;// false时相当于break, 如果return true 就相当于continure。
+                        }
+						if(attrs.length!=selectattr.length){
+							flag=false;
+							return false;
+						}
+						
+                        if($.inArray(""+option.OptionId,attrs)<0){
+                            flag=false;
+                        }
+                    });
+                    if(flag){
+                        selectattr.Sku=sku;
+                    }
+
+                });
+            });
+
+            $.each(result,function(j, selectattr) {
+                var combineId=[];
+                var combineName=[];
+                $.each(selectattr,function(k, option) {
+                    if(!option.OptionId){
+                        return true;// false时相当于break, 如果return true 就相当于continure。
+                    }
+                    combineId.push(option.OptionId);
+                    combineName.push(option.OptionName);
+                });
+
+                selectattr.CombineId=combineId.join(",");
+                selectattr.CombineName=combineName.join(",");
+
+                if(!selectattr.Sku){
+                    selectattr.Sku={};
+                    selectattr.Sku.SkuId=parseInt((new Date()).valueOf().toString().substr(6,7))+j;
+                    selectattr.Sku.AttributeName=selectattr.CombineName;
+                    selectattr.Sku.Attributes=selectattr.CombineId;
+                    selectattr.Sku.CommodityCode="";
+                    selectattr.Sku.IsDelete=0;
+                    selectattr.Sku.ProductId=$scope.Product.ProductId;
+                    selectattr.Sku.SkuImg1="";
+                    selectattr.Sku.SkuImg2="";
+                    selectattr.Sku.SkuPrice=0;
+                    selectattr.Sku.StockQuantity=0;
+
+                }
+            });
+            $scope.Product.SkuCombine=result;
+			
+			console.log('打印带SKU的属性组合');
+            console.info(result);
+
+        };
+        $scope.cloneObj = function(obj){
+            var str, newobj = obj.constructor === Array ? [] : {};
+            if(typeof obj !== 'object'){
+                return;
+            } else if(window.JSON){
+                str = JSON.stringify(obj), //序列化对象
+                        newobj = JSON.parse(str); //还原
+            } else {
+                for(var i in obj){
+                    newobj[i] = typeof obj[i] === 'object' ? cloneObj(obj[i]) : obj[i];
+                }
+            }
+            return newobj;
+        };
+        $scope.LoadProductData=function(){
+            $http({
+                method: "get",
+                url: '/api/product/'+$scope.ProductId,
+                data:$scope.args,
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            }).success(function (data, status) {
+                if (status === 200) {
+                    if (typeof data == "string" && data.indexOf("<script>") >= 0) {
+                        alert('登录超时，请重新登录！');
+                    }else{
+
+                        $scope.Product=data;
+                        //$scope.Product.Album=data.ProductAlbum.split(',');
+                        $scope.Product.Image=data.ProductImg;
+                        $scope.Product.AttributeList=data.AttributeList;
+                    }
+                }
+            });
+
+
+        };
+
+        $scope.LoadProductData();
+
+    });
+
+
+
+</script>
+</body>
+</html>

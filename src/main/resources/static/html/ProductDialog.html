@@ -1,0 +1,292 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>商品选择</title>
+    <link rel="stylesheet" type="text/css" href="/plugins/pagination/style/pagination.css" >
+    <link rel="stylesheet" type="text/css" href="/plugins/pagination/style/common.css" >
+    <style type="text/css">
+        .cs-box-content {
+            margin-left: auto;
+            margin-right: auto;
+            overflow: hidden;
+            position: relative;
+            font-family: "Microsoft YaHei";
+            font-size: 12px;
+        }
+
+        .cs-box-item {
+            background: none repeat scroll 0 0 #fff;
+            border: 1px solid #e0e0e0;
+            float: left;
+            height: 301px;
+            position: relative;
+            width: 100%;
+        }
+
+        .cs-box-innerContent {
+            height: 303px;
+        }
+
+        .cate-loading {
+            background: none repeat scroll 0 0 #fff;
+            height: 347px;
+            left: 0;
+            position: absolute;
+            text-align: center;
+            top: 0;
+            width: 1088px;
+            z-index: 20;
+        }
+
+        .cs-box-filter {
+            background-color: #fff;
+            left: 0;
+            padding: 3px 0 0 3px;
+            position: absolute;
+            top: 0;
+            z-index: 2;
+            width: 100%;
+        }
+
+        .cs-box-filter label {
+            color: #999;
+            left: 0;
+            padding-left: 30px;
+            position: absolute;
+            top: 8px;
+        }
+
+        label {
+            cursor: pointer;
+        }
+
+        .cs-box-filter-closeTip, .cs-box-prev, .cs-box-next, .cs-box-filter input, .cs-listItem-hasChild, .clearInputBtn {
+            background: url("/plugins/lhgdialog/selico.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+        }
+
+        .cs-box-filter input {
+            background-position: -44px -31px;
+            border: 1px solid #c7c7c7;
+            height: 25px;
+            line-height: 25px;
+            padding-left: 25px;
+            width: 95%;
+            color:#cccccc;
+        }
+
+        .cs-box-filter-closeTip {
+            background-position: right -16px;
+            cursor: pointer;
+            height: 15px;
+            position: absolute;
+            right: 5px;
+            top: 12px;
+            width: 15px;
+        }
+
+        .none {
+            display: none;
+        }
+
+        .cs-listboxShell {
+            height: 268px;
+            overflow: auto;
+            padding-top: 33px;
+        }
+
+        .cs-listbox {
+            padding: 0 3px;
+        }
+
+        .cs-listbox-item {
+            border: 1px solid #fff;
+            cursor: pointer;
+            height: 50px;
+            line-height: 50px;
+            padding: 0 10px 0 5px;
+        }
+        .cs-listItem-hover {
+            background-color: #f6efdc;
+        }
+
+        .cs-listItem-selected {
+            background-color: #ffeebd;
+            border: 1px solid #fcb187;
+        }
+
+        .tipselradio {
+            background: none repeat scroll 0 0 #fffaf2;
+            border: 1px solid #ffcd8b;
+            margin: 20px 0 50px;
+            padding: 5px;
+            position: relative;
+            width: 100%;
+        }
+
+        strong, dfn {
+            font-weight: bold;
+        }
+
+        .tipselradio s {
+            background-position: -482px -663px;
+            display: inline-block;
+            height: 6px;
+            left: 13px;
+            position: absolute;
+            top: -6px;
+            width: 11px;
+        }
+    </style>
+
+</head>
+<body class="mainbody">
+<form id="form1" >
+    <div>
+        <div class="cs-box-content">
+            <div class="cate-loading" style="width:100%; height: 347px; opacity: 0.8; display: none;"><p>正在努力加载...</p></div>
+            <div class="cs-box-innerContent">
+                <div class="cs-box-item">
+                    <div class="cs-box-filter">
+                        <input type="text" id="Keyword" class="cs-box-filter-input" placeholder="输入名称">
+                        <span class="cs-box-filter-closeTip J-closeTip none"></span>
+                    </div>
+                    <div style="height: 268px" class="cs-listboxShell">
+                        <ul class="cs-listbox" id="Container"></ul>
+                    </div>
+                </div>
+            </div>
+            <div class="tipselradio">
+                <strong>您当前选择的是：</strong>
+                <span id="data_path" class="tipselradio-className"></span>
+                <input type="hidden" id="data_id" value="" />
+                <input type="hidden" id="data_title" value="" />
+                <input type="hidden" id="data_img" value="" />
+            </div>
+            <div class="page-box"></div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript" src="/plugins/jquery/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/plugins/lhgdialog/lhgdialog.js?skin=idialog"></script>
+<script type="text/javascript" src="/plugins/pagination/jquery.pagination.js"></script>
+<script type="text/javascript">
+    //DOM加载完成时运行
+    $(function () {
+        //当本页面属于其他页面的弹出页面时
+        if (frameElement != null && frameElement.api != null) {
+            var api = frameElement.api;
+            api.button({
+                id: 'valueOk',
+                name: '确定',
+                focus: true,
+                callback: function () {
+                    var data = {};
+
+                    data.id = $("#data_id").val();
+                    data.title = $("#data_title").val();
+                    data.img = $("#data_img").val();
+                    if (data.id == "" || data.title == "") {
+                        alert("您没有选择任何数据！");
+                        return false;
+                    }
+                    else {
+                        if (api.data != 'undefined') {
+                            api.data(data);
+                        }
+                        return true;
+                    }
+                }
+            }, { id: 'valueCancel', name: '取消' });
+        }
+
+        $('.page-box').pagination({
+            pageCount: 1,
+            current:1,
+            jump: false,
+            callback:function(api){
+                var data = {
+                    page: api.getCurrent(),
+                    name: 'mss',
+                    say: 'oh',
+                    keyword:'iphone'
+                };
+                console.info(data);
+                $.ajax({
+                    type: "post",
+                    async: true,
+                    url: "/api/productpage/"+data.keyword+"/"+data.page+"/10",
+                    contentType: "application/json;charset:utf-8",
+                    dataType: "json",
+                    data: "",
+                    success: function (data) {
+                        api.setPageCount(data.totalPage);//动态修改总页数为20页
+
+                        $("#Container li").remove();
+                        var listContainer=$("#Container");
+                        $(data.list).each(function (i, val) {
+                            var li = '<li  data-id="' + val.ProductId + '"  data-title="' + val.Title + '"  data-img="' + val.ProductImg + '"    class="cs-listbox-item"><img style="margin: 5px;float:left;width:30px;height:30px;" src="' + val.ProductImg + '">' + val.Title + '</li>';
+                            listContainer.append(li);
+                        });
+                    },
+                    error: function (msg, timeout, message) {
+                        var contentType = msg.getResponseHeader("Content-Type");
+                        if (msg.status === 200 && contentType.toLowerCase().indexOf("text/html") >= 0) {
+                            window.location.reload();
+                        }
+                    }
+                });
+            }
+        },function(api){
+            console.log(api.getCurrent());
+        });
+
+        //$('.page-box').pagination.filling();
+
+        //鼠标选择时改变颜色,并且显示当前选中
+        $(".cs-listbox").on("click", "li", function () {
+            var id=$(this).attr("data-id");
+            var title=$(this).attr("data-title");
+            var img=$(this).attr("data-img");
+
+            $("#data_id").val(id);
+            $("#data_title").val(title);
+            $("#data_img").val(img);
+            $("#data_path").text(title);
+
+            $(this).parent().find('li').removeClass("cs-listItem-selected");
+            $(this).addClass("cs-listItem-selected");
+        });
+
+        //选中改变颜色
+        $(".cs-listbox").on("mouseenter", "li", function () {
+            $(this).addClass("cs-listItem-hover");
+        }).on("mouseleave", "li", function () {
+            $(this).removeClass("cs-listItem-hover");
+        });
+        //输入关键字查找类目
+        $(".cs-box-filter-input").focus(function () {
+            $(this).css("color", "");
+            if ($(this).val() == "输入类目名称")
+                $(this).val("");
+        }).blur(function () {
+            if ($(this).val() == "")
+                $(this).val("输入类目名称").css("color", "#cccccc");
+        }).keyup(function () {
+            var search = $.trim($(this).val());
+            $(this).parent().parent().find(".cs-listbox li").each(function (i) {
+                var current = $(this).text();
+                if (current.indexOf(search) == -1 && search != "" && search != "输入名称") {
+                    $(this).css('display', 'none');
+                } else {
+                    $(this).css('display', 'list-item');
+                }
+            });
+        });
+    });
+
+
+</script>
+</body>
+</html>
